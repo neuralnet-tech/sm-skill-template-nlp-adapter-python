@@ -59,7 +59,8 @@ async def session(request: SessionRequest) -> SessionResponse:
     session_id, skill_config, skill_memory = attrgetter("sessionId", "config", "memory")(request)
 
     # 1a. Extract relevant credentials from config
-    credentials = itemgetter("first_credentials", "second_credentials")(skill_config)
+    #credentials = itemgetter("first_credentials", "second_credentials")(skill_config)
+    credentials = ("me","you")
 
     # 2. Make request to third party service to initialize session-specific resources
     fake_nlp_service = FakeNLPService(*credentials)
