@@ -32,6 +32,8 @@ async def init(request: InitRequest):
     # 1. Extract relevant data
     skill_config = request.config
 
+    print("skill config body:", skill_config)
+
     # 1a. Extract relevant credentials from config
     credentials = itemgetter("first_credentials", "second_credentials")(skill_config)
 
