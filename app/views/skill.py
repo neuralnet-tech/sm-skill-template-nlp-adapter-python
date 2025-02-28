@@ -35,7 +35,8 @@ async def init(request: InitRequest):
     print("skill config body:", skill_config)
 
     # 1a. Extract relevant credentials from config
-    credentials = itemgetter("first_credentials", "second_credentials")(skill_config)
+    #credentials = itemgetter("first_credentials", "second_credentials")(skill_config)
+    credentials = ("me","you")
 
     # 2. Make request to third party service to initialize 
     # any configuration, data storage, or pre-training on the NLP service before executing this Skill
