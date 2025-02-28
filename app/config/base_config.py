@@ -6,8 +6,8 @@ class BaseConfig(BaseSettings):
     """
 
     port: int = 8080
-    env: str
-    debug: bool
+    env: str = "DEVELOPMENT"
+    debug: bool = True
 
     class Config:
         env_file = ".env"
