@@ -89,3 +89,6 @@ This repository is licensed under the Apache License, Version 2.0. See
 
 ## Issues
 For any issues, please reach out to one of our Customer Success team members.
+
+## REFs
+* [nlp skill](https://docs.soulmachines.com/skills-api/getting-started/nlp-adapter-skill)

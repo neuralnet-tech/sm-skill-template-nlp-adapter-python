@@ -5,7 +5,7 @@ class BaseConfig(BaseSettings):
     Base application configuration
     """
 
-    port: int = 3000
+    port: int = 8080
     env: str
     debug: bool
 
