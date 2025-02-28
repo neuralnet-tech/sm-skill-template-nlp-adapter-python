@@ -3,6 +3,6 @@ Flask[async]
 Python-DotEnv
 smskillsdk
 uvicorn
-vertexai
-google-cloud-aiplatform>=1.38
+#vertexai
+#google-cloud-aiplatform>=1.38
 pydantic<2

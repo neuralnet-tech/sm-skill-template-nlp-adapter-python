@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 from ..mocks.mock_request import mock_get_response, mock_init_resources, mock_init_actions
-from smskillsdk.models.api import MemoryScope
+from smskillsdk.models.common import MemoryScope
 
 class FakeNLPService:
     first_credentials: str

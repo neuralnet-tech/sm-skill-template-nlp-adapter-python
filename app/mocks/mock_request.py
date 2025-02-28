@@ -4,7 +4,7 @@ and should be replaced with the actual HTTP calls when implementing.
 """
 
 from typing import List
-from smskillsdk.models.api import Memory, MemoryScope, Intent
+from smskillsdk.models.common import Memory, MemoryScope, Intent
 
 
 def mock_init_actions():
