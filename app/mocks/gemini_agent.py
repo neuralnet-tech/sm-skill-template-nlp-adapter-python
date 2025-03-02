@@ -39,6 +39,9 @@ system_instruction = ["""You are an expert and customer fronting service agent f
                        DO NOT USE BULLET POINTS, NUMBERED LIST, BOLD, or ITALIC to format your answers."""]
 
 
+BOT_WELCOME_MESSAGE = "Hello! I am your virtual assistant 小美. How can I assist you today?"
+
+
 
 class Chatbot:
     def __init__(self, history: Optional[List["Content"]] = None, model: Optional[str] = "gemini-1.5-flash-002", use_search=False):
@@ -117,6 +120,18 @@ def init_resources(session_id: str) -> List[Memory]:
 
     return [private_memory, public_memory]
 
+def get_welcome_response():
+    # standard welcome message
+    response = BOT_WELCOME_MESSAGE
+
+    intent = Intent(
+        name="Welcome",
+        confidence=1,
+    )
+
+    cards, annotations =  None, None
+    return response, cards, intent, annotations
+
 def get_response(user_input: str):
     """
     Example of an action performed by the Execute ednpoint
@@ -127,7 +142,7 @@ def get_response(user_input: str):
     # Response to be spoken by your Digital Person
     response = agent.chatbot.generate_response(user_input) #"Hello! @showcards(card) Here is a kitten."
 
-    cards, intent =  None, None
+    cards, intent, annotations =  None, None, None
     """
     # Add your Cards as required
     cards = {
@@ -144,7 +159,7 @@ def get_response(user_input: str):
     intent = Intent(
         name="Welcome",
         confidence=1,
-    )"""
+    )
   
     # If applicable, add your conversation annotations to see metrics for your Skill on Studio Insights
     annotations = {
@@ -152,6 +167,6 @@ def get_response(user_input: str):
         "conv_id": intent.name, 
         "conv_intent": intent.name, 
         "conv_type": "Entry",
-    }
+    }"""
 
     return response, cards, intent, annotations

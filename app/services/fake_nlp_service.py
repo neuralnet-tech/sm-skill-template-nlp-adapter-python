@@ -1,7 +1,8 @@
 from fastapi import HTTPException
 #from ..mocks.mock_request import mock_get_response, mock_init_resources, mock_init_actions
-from ..mocks.gemini_agent import get_response, init_resources, init_actions
-from smskillsdk.models.common import MemoryScope
+from ..mocks.gemini_agent import get_response, init_resources, init_actions, get_welcome_response
+from smskillsdk.models.common import MemoryScope, Intent
+
 
 
 #test
@@ -57,9 +58,14 @@ class FakeNLPService:
 
         return credentials_memory
 
-    def send(self, user_input: str):
+    def send(self, user_input):
         """
         Example of sending input to the third party NLP call 
         """
 
-        return get_response(user_input)
+        if user_input == "Welcome":
+            return get_welcome_response()
+        else:
+            return get_response(user_input)
+
+        

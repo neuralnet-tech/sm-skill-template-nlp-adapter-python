@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from operator import itemgetter, attrgetter
 from smskillsdk.utils.memory import get_memory_value, set_memory_value
 from ..services.fake_nlp_service import FakeNLPService
+
 from smskillsdk.models.api import (
     InitRequest,
     SessionRequest,
@@ -89,7 +90,7 @@ async def execute(request: ExecuteRequest) -> ExecuteResponse:
     """
 
     # 1. Extract relevant data
-    skill_config, skill_memory, context = attrgetter("config", "memory", "context")(request)
+    user_intent, skill_config, skill_memory, context = attrgetter("intent", "config", "memory", "context")(request)
 
     # 1a. when using stateless skill, extract relevant credentials from config
     # credentials = itemgetter("first_credentials", "second_credentials")(skill_config)
@@ -97,11 +98,11 @@ async def execute(request: ExecuteRequest) -> ExecuteResponse:
     # 1b. when using stateful skill, extract relevant credentials elsewhere (eg. memory) as config will not be present here
     _, credentials = get_memory_value(memories=skill_memory, key="credentials")
 
-    # 2. Extract user input
-    user_input = request.text
-
     # 3. Make request to third party service
     fake_nlp_service = FakeNLPService(*credentials)
+
+    # 2. Extract user input
+    user_input = request.text
 
     # 4. Extract relevant response data from the third party service
     spoken_response, cards, intent, annotations = fake_nlp_service.send(user_input)
