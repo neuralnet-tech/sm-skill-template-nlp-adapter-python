@@ -1,6 +1,5 @@
 from fastapi import HTTPException
-#from ..mocks.mock_request import mock_get_response, mock_init_resources, mock_init_actions
-from gemini import get_response, init_resources, init_actions
+from ..mocks.mock_request import mock_get_response, mock_init_resources, mock_init_actions
 from smskillsdk.models.common import MemoryScope
 
 class FakeNLPService:
@@ -26,14 +25,14 @@ class FakeNLPService:
         Example of initializing Skill-specific actions on third party NLP call
         """
 
-        return init_actions()
+        return mock_init_actions()
 
     def init_session_resources(self, session_id: str):
         """
         Example of initializing resources with third party NLP call 
         """
         
-        return init_resources(session_id)
+        return mock_init_resources(session_id)
 
 
     def persist_credentials(self, session_id: str):
@@ -59,4 +58,4 @@ class FakeNLPService:
         Example of sending input to the third party NLP call 
         """
 
-        return get_response(user_input)
+        return mock_get_response(user_input)
