@@ -92,7 +92,7 @@ async def execute(request: ExecuteRequest) -> ExecuteResponse:
     # 1. Extract relevant data
     user_intent, skill_config, skill_memory, context = attrgetter("intent", "config", "memory", "context")(request)
 
-    print("Request:", user_intent, skill_config, skill_memory, context )
+    #print("Request:", user_intent, skill_config, skill_memory, context )
 
     # 1a. when using stateless skill, extract relevant credentials from config
     # credentials = itemgetter("first_credentials", "second_credentials")(skill_config)
