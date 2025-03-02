@@ -108,7 +108,10 @@ async def execute(request: ExecuteRequest) -> ExecuteResponse:
     spoken_response, cards, intent, annotations = fake_nlp_service.send(user_input)
 
     # 5. Construct SM-formatted response body
-    variables = Variables(public=cards, **annotations)
+    if annotations is not None:
+        variables = Variables(public=cards, **annotations)
+    else:
+        variables = None
 
     output = Output(
         intent=intent,

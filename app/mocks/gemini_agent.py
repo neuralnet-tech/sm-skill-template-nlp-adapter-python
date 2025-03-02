@@ -129,7 +129,14 @@ def get_welcome_response():
         confidence=1,
     )
 
-    cards, annotations =  None, None
+    annotations = {
+        "conv_tag": "Skill.BaseTemplate", 
+        "conv_id": intent.name, 
+        "conv_intent": intent.name, 
+        "conv_type": "Entry",
+    }
+
+    cards = None
     return response, cards, intent, annotations
 
 def get_response(user_input: str):
