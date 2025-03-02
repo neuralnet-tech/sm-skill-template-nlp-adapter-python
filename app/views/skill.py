@@ -121,7 +121,7 @@ async def execute(request: ExecuteRequest) -> ExecuteResponse:
 
     response = ExecuteResponse(
         output=output,
-        endConversation=True,
+        endConversation=False,
     )
 
     return response
