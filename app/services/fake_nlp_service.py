@@ -3,6 +3,9 @@ from fastapi import HTTPException
 from gemini_agent import get_response, init_resources, init_actions
 from smskillsdk.models.common import MemoryScope
 
+
+#test
+
 class FakeNLPService:
     first_credentials: str
     second_credentials: str
