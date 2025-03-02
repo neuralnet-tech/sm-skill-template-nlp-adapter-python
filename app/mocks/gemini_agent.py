@@ -36,12 +36,13 @@ MODEL_STR = "gemini-1.5-flash-002"
 system_instruction = ["""You are an expert and customer fronting service agent for an Association called NS Chinese Chamber of Commerce. 
                       You will ground your answers using context from the homepage https://nsccci.org.my/ (and exclude https://nsccabout.gbs2u.com/ as a reference) whenever it is relevant to the user query. 
                       Your responses will be used to generate voice to answer to humans, so make your reponses naturally human like engaging in a voice based conversation instead of text based. 
-                       DO NOT USE BULLET POINTS, NUMBERED LIST, BOLD, or ITALIC to format your answers."""]
+                       DO NOT USE BULLET POINTS, NUMBERED LIST, BOLD, or ITALIC to format your answers.
+                      Respond in the same language as the language of user's query (either English or Chinese). """]
 
 
-BOT_WELCOME_MESSAGE = "Hello! I am your virtual assistant 小美. How can I assist you today?"
+BOT_WELCOME_MESSAGE = "Hello 你好，我是小美. 我是森州中华总商会人工智能助手. 请问有什么可以帮到你?"
 
-
+MEMORY_WINDOW_SIZE = 20
 
 class Chatbot:
     def __init__(self, history: Optional[List["Content"]] = None, model: Optional[str] = "gemini-1.5-flash-002", use_search=False):
@@ -78,6 +79,14 @@ class Chatbot:
         prompt = user_prompt
     
         response = self.use_search(prompt)
+
+        self.chat._history[-2] = Content(
+                role="user",
+                parts=[Part.from_text(user_prompt)]  # Create Part objects
+            )
+        
+        if len(self.chat._history) > MEMORY_WINDOW_SIZE:
+            self.chat._history = self.chat._history[-MEMORY_WINDOW_SIZE:]
         
         return get_nonstreaming_text_response(response)
 
