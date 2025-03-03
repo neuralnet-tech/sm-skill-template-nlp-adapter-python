@@ -194,7 +194,7 @@ def get_response(user_input: str):
         if reponse_dict['uer_wants_to_watch_video']:
             response = f"Please enjoy the video. 请欣赏视屏。 {video_url[reponse_dict['type_of_video']]}"
         else:
-            response = reponse_dict['response_text']
+            response = reponse_dict['response_text'] + " https://www.youtube.com/watch?v=Bhkm6fZMJcI"
         
 
     except Exception as e:
