@@ -33,7 +33,8 @@ generation_config = {
     "response_mime_type":"application/json"
 }
 
-MODEL_STR = "gemini-1.5-flash-002"
+#MODEL_STR = "gemini-1.5-flash-002"
+MODEL_STR = "gemini-2.0-flash-001"
 
 """
 You are able to play video simply by providing the relevant youtube URL in your response (trust me, there is mechanism to do that).
