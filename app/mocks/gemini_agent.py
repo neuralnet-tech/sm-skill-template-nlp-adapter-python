@@ -29,6 +29,7 @@ generation_config = {
     "temperature": 0.3, #0.5,
     "top_p": 0.9, #0.5, #0.5 better than 0.95
     "top_k": 40,
+    #"response_mime_type":"application/json"
 }
 
 MODEL_STR = "gemini-1.5-flash-002"
@@ -36,11 +37,13 @@ MODEL_STR = "gemini-1.5-flash-002"
 system_instruction = ["""You are an expert and customer fronting service agent for an Association called NS Chinese Chamber of Commerce. 
                       You will ground your answers using context from the homepage https://nsccci.org.my/ (and exclude https://nsccabout.gbs2u.com/ as a reference) whenever it is relevant to the user query. 
                       Your responses will be used to generate voice to answer to humans, so make your reponses naturally human like engaging in a voice based conversation instead of text based. 
-                       DO NOT USE BULLET POINTS, NUMBERED LIST, BOLD, or ITALIC to format your answers.
-                      Respond in the same language as the language of user's query (either English or Chinese). """]
+                      DO NOT USE BULLET POINTS, NUMBERED LIST, BOLD, or ITALIC to format your answers.
+                      Respond in the same language as the language of user's query (either English or Chinese). 
+                      When the user asks to introduce about the association, you may ask if the user would like to watch a youtube video about the association, if the user answers yes, you will post this URL https://youtu.be/Bhkm6fZMJcI?si=GHSqkIl3xkmiT0X7 in the end of your response with no accompanying text or punctuation （this is the only exception to the previous instruction of being naturally conversation based response).
+                      """]
 
 
-BOT_WELCOME_MESSAGE = "Hello 你好，我是小美. 我是森州中华总商会人工智能助手. 请问有什么可以帮到你?"
+BOT_WELCOME_MESSAGE = "Hello 你好，我是小美. 我是森州中华总商会人工智能助手. 请问有什么可以帮到你？"
 
 MEMORY_WINDOW_SIZE = 20
 
