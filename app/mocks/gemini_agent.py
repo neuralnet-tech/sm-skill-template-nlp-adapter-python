@@ -54,7 +54,7 @@ system_instruction = ["""You are an expert and customer fronting service agent f
                       DO NOT USE BULLET POINTS, NUMBERED LIST, BOLD, or ITALIC to format your answers.
                       Respond in the same language as the language of user's query (either English or Chinese). 
                       Be polite and friendly. Keep your answers short and concise.
-                      If the user wants to know about NSCCCI (such as the association's history, mission, vision, etc.), you may ask if the user would like to watch a youtube video about the association, or about investment opportunities in Negeri Sembilan focusing on a project called The Vision Valley.
+                      If the user wants to know about NSCCCI (such as the association's history, mission, vision, etc.), you may ask if the user would like to watch a youtube video about the association which talks about the history, or about investment opportunities in Negeri Sembilan focusing on a project called The Vision Valley.
                       Response in following schema:
                       {
                       "response_text": "your text based response",
@@ -183,16 +183,16 @@ def get_response(user_input: str):
     reponse_dict = agent.chatbot.generate_response(user_input) #"Hello! @showcards(card) Here is a kitten."
 
     print(f"generated resp: {reponse_dict}")
-
+    response = ""
     try:
         reponse_dict = json.loads(reponse_dict)
-        reponse = reponse_dict['response_text']
+        response = reponse_dict['response_text']
         if reponse_dict['play_youtube_video']:
-            reponse += f" {video_url[reponse_dict['type_of_video']]}"
+            response += f" {video_url[reponse_dict['type_of_video']]}"
 
     except Exception as e:
         print("error in reponse error decoding:",e)
-        reponse = ""
+        
 
     cards, intent, annotations =  None, None, None
     """
