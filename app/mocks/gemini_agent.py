@@ -25,7 +25,7 @@ safety_settings={
             generative_models.HarmCategory.HARM_CATEGORY_HARASSMENT: generative_models.HarmBlockThreshold.BLOCK_NONE,
         }
 generation_config = {
-    "max_output_tokens": 8192,
+    "max_output_tokens": 512,
     "temperature": 0.3, #0.5,
     "top_p": 0.9, #0.5, #0.5 better than 0.95
     "top_k": 40,
@@ -162,6 +162,8 @@ def get_response(user_input: str):
 
     # Response to be spoken by your Digital Person
     response = agent.chatbot.generate_response(user_input) #"Hello! @showcards(card) Here is a kitten."
+
+    print(f"generated resp: {response}")
 
     cards, intent, annotations =  None, None, None
     """
