@@ -73,13 +73,30 @@ BOT_WELCOME_MESSAGE = "Hello 你好，我是小美. 我是森州中华总商会�
 
 MEMORY_WINDOW_SIZE = 20
 
+DATA_STORE_ID="acccim-ns_1740458649382"
+DATA_STORE_REGION="us"
+project_id="neuralnet-manforce"
+datastore = f"projects/{project_id}/locations/{DATA_STORE_REGION}/collections/default_collection/dataStores/{DATA_STORE_ID}"
+datastore_grounding_tool = Tool.from_retrieval(
+            grounding.Retrieval(
+                grounding.VertexAISearch(
+                    project=project_id,
+                    datastore=DATA_STORE_ID,
+                    location=DATA_STORE_REGION,
+                    #datastore=datastore,
+                    )
+                )
+        )
+googlesearch_tool = Tool.from_google_search_retrieval(grounding.GoogleSearchRetrieval())
+
 class Chatbot:
     def __init__(self, history: Optional[List["Content"]] = None, model: Optional[str] = "gemini-1.5-flash-002", use_search=False):
         self.model = GenerativeModel(
             model,
             system_instruction=system_instruction)
         self.chat = self.model.start_chat(history=history)
-        self.grounding_tool = Tool.from_google_search_retrieval(grounding.GoogleSearchRetrieval())
+        #self.grounding_tool = Tool.from_google_search_retrieval(grounding.GoogleSearchRetrieval())
+        self.grounding_tool = datastore_grounding_tool
 
     """
     def use_rag_tool(self, user_prompt):
