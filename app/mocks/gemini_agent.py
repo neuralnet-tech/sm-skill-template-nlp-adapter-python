@@ -105,7 +105,13 @@ class Chatbot:
 
     def generate_response(self, user_prompt=""):
         #prompt = user_prompt
-        prompt = user_prompt
+        #prompt = user_prompt
+
+        if len(self.chat._history):
+            prompt = f"""Your last message was :"{self.chat._history[-1].parts[0]._raw_part.text}" Please respond in the same language as my CURRENT MESSAGE and my CURRENT MESSAGE is :"{user_prompt}". 
+            """
+        else:
+            prompt = user_prompt
     
         response = self.use_search(prompt)
 
