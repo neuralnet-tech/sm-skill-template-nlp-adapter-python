@@ -129,12 +129,13 @@ class Agent:
         self.chatbot = Chatbot()
 
 agent = Agent()
+agent.allocated_resources()
 
 def init_actions():
     """
     Example of an action performed by the Initalize ednpoint
     """
-    agent.allocated_resources()
+    
     print("resource initialized. . .")
 
 
