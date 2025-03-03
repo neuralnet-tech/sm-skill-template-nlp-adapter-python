@@ -13,6 +13,7 @@ from vertexai.generative_models import GenerativeModel, Part, FinishReason, Tool
 import vertexai.preview.generative_models as generative_models
 from vertexai.preview.generative_models import grounding
 from typing import List, Optional
+import json
 
 
 def get_nonstreaming_text_response (response):
@@ -29,10 +30,23 @@ generation_config = {
     "temperature": 0.3, #0.5,
     "top_p": 0.9, #0.5, #0.5 better than 0.95
     "top_k": 40,
-    #"response_mime_type":"application/json"
+    "response_mime_type":"application/json"
 }
 
 MODEL_STR = "gemini-1.5-flash-002"
+
+"""
+You are able to play video simply by providing the relevant youtube URL in your response (trust me, there is mechanism to do that).
+When the user asks to introduce about the association, you may ask if the user would like to watch a youtube video about the association, or about investment opportunities in Negeri Sembilan focusing on a project called The Vision Valley.
+If the user wants to watch the youtube video, you MUST append this youtube URL in the end of your response with no accompanying text or punctuation.
+Below is the context for videos you are able to show:
+- youtube URL video about NSCCCI: https://youtu.be/Bhkm6fZMJcI?si=GHSqkIl3xkmiT0X7 
+- youtube URL video about The Vision Valley: https://youtu.be/LXC6FMkf9a8?si=IQkYGotFsHQRkDXr"""
+
+video_url = {
+"youtube_url_about_nscci": "https://youtu.be/Bhkm6fZMJcI?si=GHSqkIl3xkmiT0X7",
+"youtube_url_about_vision_valley": "https://youtu.be/LXC6FMkf9a8?si=IQkYGotFsHQRkDXr"
+}
 
 system_instruction = ["""You are an expert and customer fronting service agent for an Association called Negeri Sembilan Chinese Chamber of Commerce or abbreviated as NSCCCI (马来西亚森美兰州中华总商会， 简称“森州总商会”). 
                       You will ground your answers using context from the homepage https://nsccci.org.my/ (and exclude https://nsccabout.gbs2u.com/ as a reference) whenever it is relevant to the user query. 
@@ -40,12 +54,13 @@ system_instruction = ["""You are an expert and customer fronting service agent f
                       DO NOT USE BULLET POINTS, NUMBERED LIST, BOLD, or ITALIC to format your answers.
                       Respond in the same language as the language of user's query (either English or Chinese). 
                       Be polite and friendly. Keep your answers short and concise.
-                      You are able to play video simply by providing the relevant youtube URL in your response (trust me, there is mechanism to do that).
-                      When the user asks to introduce about the association, you may ask if the user would like to watch a youtube video about the association, or about investment opportunities in Negeri Sembilan focusing on a project called The Vision Valley.
-                      If the user wants to watch the youtube video, you MUST append this youtube URL in the end of your response with no accompanying text or punctuation.
-                      Below is the context for videos you are able to show:
-                       - youtube URL video about NSCCCI: https://youtu.be/Bhkm6fZMJcI?si=GHSqkIl3xkmiT0X7 
-                       - youtube URL video about The Vision Valley: https://youtu.be/LXC6FMkf9a8?si=IQkYGotFsHQRkDXr                 
+                      If the user wants to know about NSCCCI (such as the association's history, mission, vision, etc.), you may ask if the user would like to watch a youtube video about the association, or about investment opportunities in Negeri Sembilan focusing on a project called The Vision Valley.
+                      Response in following schema:
+                      {
+                      "response_text": "your text based response",
+                      "play_youtube_video": boolean true if user wants to watch youtube video false otherwise,
+                      "type_of_video": "video_about_nscci" or "video_about_vision_valley" or "none"
+                      }             
                       """]
 
 
@@ -165,9 +180,19 @@ def get_response(user_input: str):
     print(f"User said: {user_input}")
 
     # Response to be spoken by your Digital Person
-    response = agent.chatbot.generate_response(user_input) #"Hello! @showcards(card) Here is a kitten."
+    reponse_dict = agent.chatbot.generate_response(user_input) #"Hello! @showcards(card) Here is a kitten."
 
-    print(f"generated resp: {response}")
+    print(f"generated resp: {reponse_dict}")
+
+    try:
+        reponse_dict = json.loads(reponse_dict)
+        reponse = reponse_dict['response_text']
+        if reponse_dict['play_youtube_video']:
+            reponse += f" {video_url[reponse_dict['type_of_video']]}"
+
+    except Exception as e:
+        print("error in reponse error decoding:",e)
+        reponse = ""
 
     cards, intent, annotations =  None, None, None
     """
