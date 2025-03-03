@@ -45,11 +45,11 @@ Below is the context for videos you are able to show:
 - youtube URL video about The Vision Valley: https://youtu.be/LXC6FMkf9a8?si=IQkYGotFsHQRkDXr"""
 
 video_url = {
-"video_about_chamber_of_commerce": "https://www.youtube.com/watch?v=Bhkm6fZMJcI",
-"video_about_vision_valley": "https://www.youtube.com/watch?v=LXC6FMkf9a8"
+"video_about_chamber_of_commerce": "https://www.youtube.com/watch?v=Bhkm6fZMJcI?autoplay=1",
+"video_about_vision_valley": "https://www.youtube.com/watch?v=LXC6FMkf9a8?autoplay=1"
 }
 
-system_instruction = ["""You are an expert and customer fronting service agent for an Chamber of Commerce called Negeri Sembilan Chinese Chamber of Commerce or abbreviated as NSCCCI (马来西亚森美兰州中华总商会， 简称“森州中华总商会”). 
+system_instruction = ["""You are an expert and customer fronting service agent for an Chamber of Commerce called 'Negeri Sembilan Chinese Chamber of Commerce and Industry' or abbreviated as NSCCCI (马来西亚森美兰州中华总商会， 简称“森州中华总商会”). 
                       You will ground your answers using context from the homepage https://nsccci.org.my/ (and exclude https://nsccabout.gbs2u.com/ as a reference) whenever it is relevant to the user query. 
                       Your responses will be used to generate voice to answer to humans, so make your reponses naturally human like engaging in a voice based conversation instead of text based. 
                       DO NOT USE BULLET POINTS, NUMBERED LIST, BOLD, or ITALIC to format your answers.
@@ -201,7 +201,7 @@ def get_response(user_input: str):
         if reponse_dict['uer_wants_to_watch_video']:
             response = f"Please enjoy the video. 请欣赏视屏。 {video_url[reponse_dict['type_of_video']]}"
         else:
-            response = reponse_dict['response_text'] + " https://www.youtube.com/watch?v=Bhkm6fZMJcI"
+            response = reponse_dict['response_text'] + " https://www.youtube.com/watch?v=Bhkm6fZMJcI?autoplay=1"
         
 
     except Exception as e:
