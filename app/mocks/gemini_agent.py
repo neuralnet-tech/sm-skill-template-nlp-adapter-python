@@ -44,23 +44,24 @@ Below is the context for videos you are able to show:
 - youtube URL video about The Vision Valley: https://youtu.be/LXC6FMkf9a8?si=IQkYGotFsHQRkDXr"""
 
 video_url = {
-"youtube_url_about_nscci": "https://youtu.be/Bhkm6fZMJcI?si=GHSqkIl3xkmiT0X7",
+"video_about_nsccci": "https://youtu.be/Bhkm6fZMJcI?si=GHSqkIl3xkmiT0X7",
 "youtube_url_about_vision_valley": "https://youtu.be/LXC6FMkf9a8?si=IQkYGotFsHQRkDXr"
 }
 
-system_instruction = ["""You are an expert and customer fronting service agent for an Association called Negeri Sembilan Chinese Chamber of Commerce or abbreviated as NSCCCI (马来西亚森美兰州中华总商会， 简称“森州总商会”). 
+system_instruction = ["""You are an expert and customer fronting service agent for an Chamber of Commerce called Negeri Sembilan Chinese Chamber of Commerce or abbreviated as NSCCCI (马来西亚森美兰州中华总商会， 简称“森州总商会”). 
                       You will ground your answers using context from the homepage https://nsccci.org.my/ (and exclude https://nsccabout.gbs2u.com/ as a reference) whenever it is relevant to the user query. 
                       Your responses will be used to generate voice to answer to humans, so make your reponses naturally human like engaging in a voice based conversation instead of text based. 
                       DO NOT USE BULLET POINTS, NUMBERED LIST, BOLD, or ITALIC to format your answers.
-                      Respond in the same language as the language of user's query (either English or Chinese). 
-                      Be polite and friendly. Keep your answers short and concise.
-                      If the user wants to know about NSCCCI (such as the association's history, mission, vision, etc.), you may ask if the user would like to watch a youtube video about the association which talks about the history, or about investment opportunities in Negeri Sembilan focusing on a project called The Vision Valley.
-                      Response in following schema:
+                      Be polite and friendly. Keep your answers short and concise. Respond in the same language as the language of user's query (either English or Chinese).  
+                      If the user wants to know about NSCCCI Chamber (such as the Chamber's history, mission, vision, etc.), you may ask if the user would like to watch a youtube video about the Chamber which talks about the founding history, vision and mission, 
+                      You are also able to talk about investment opportunities in Negeri Sembilan focusing on a project called The Vision Valley, and ask if user would like to watch a youtube video about the project.
+                      Respond in following schema:
                       {
-                      "response_text": "your text based response",
+                      "response_text": "your text based response, Respond in the same language as the language of user's query (either English or Chinese).",
                       "play_youtube_video": boolean true if user wants to watch youtube video false otherwise,
-                      "type_of_video": "video_about_nscci" or "video_about_vision_valley" or "none"
-                      }             
+                      "type_of_video": "video_about_nsccci" or "video_about_vision_valley" or "none"
+                      }   
+                               
                       """]
 
 
@@ -186,9 +187,11 @@ def get_response(user_input: str):
     response = ""
     try:
         reponse_dict = json.loads(reponse_dict)
-        response = reponse_dict['response_text']
         if reponse_dict['play_youtube_video']:
-            response += f" {video_url[reponse_dict['type_of_video']]}"
+            response = f"Please enjoy the video. 请欣赏视屏。 {video_url[reponse_dict['type_of_video']]}"
+        else:
+            response = reponse_dict['response_text']
+        
 
     except Exception as e:
         print("error in reponse error decoding:",e)
