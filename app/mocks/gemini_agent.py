@@ -44,8 +44,8 @@ Below is the context for videos you are able to show:
 - youtube URL video about The Vision Valley: https://youtu.be/LXC6FMkf9a8?si=IQkYGotFsHQRkDXr"""
 
 video_url = {
-"video_about_nsccci": "https://youtu.be/Bhkm6fZMJcI?si=GHSqkIl3xkmiT0X7",
-"youtube_url_about_vision_valley": "https://youtu.be/LXC6FMkf9a8?si=IQkYGotFsHQRkDXr"
+"video_about_nsccci": "https://www.youtube.com/watch?v=Bhkm6fZMJcI",
+"youtube_url_about_vision_valley": "https://www.youtube.com/watch?v=LXC6FMkf9a8"
 }
 
 system_instruction = ["""You are an expert and customer fronting service agent for an Chamber of Commerce called Negeri Sembilan Chinese Chamber of Commerce or abbreviated as NSCCCI (马来西亚森美兰州中华总商会， 简称“森州总商会”). 
