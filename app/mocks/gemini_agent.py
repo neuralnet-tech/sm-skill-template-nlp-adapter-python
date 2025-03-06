@@ -45,7 +45,7 @@ Below is the context for videos you are able to show:
 - youtube URL video about The Vision Valley: https://youtu.be/LXC6FMkf9a8?si=IQkYGotFsHQRkDXr"""
 
 video_url = {
-"video_about_chamber_of_commerce": "https://www.youtube.com/watch?v=Bhkm6fZMJcI",
+"video_about_chamber_of_commerce": "https://www.youtube.com/embed/Bhkm6fZMJcI?autoplay=1&mute=0", #"https://www.youtube.com/watch?v=Bhkm6fZMJcI",
 "video_about_vision_valley": "https://www.youtube.com/watch?v=LXC6FMkf9a8"
 }
 
@@ -62,7 +62,8 @@ system_instruction = ["""You are an expert and customer fronting service agent f
                       {
                       "response_text": "your text based response. Respond in the same language as the language of user's query (either English or Chinese).",
                       "uer_wants_to_watch_video": boolean true if user wants/wishes/intends to watch video false otherwise,
-                      "type_of_video": "video_about_chamber_of_commerce" or "video_about_vision_valley"
+                      "type_of_video": "video_about_chamber_of_commerce" or "video_about_vision_valley",
+                      "language": "en" or "zh", default to "en"
                       }   
                       ONLY answer to queries that are related to NSCCCI other matters related to Negeri Sembilan, such as investment opportunities in Negeri Sembilan focusing on a project called The Vision Valley.
                       If the user asks about anything else, apologies and explain that you are not able to answer as you have to focus on your responssibilities as a fronting service agent for NSCCCI.
