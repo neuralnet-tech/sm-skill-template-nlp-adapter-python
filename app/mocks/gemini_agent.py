@@ -228,6 +228,9 @@ def get_response(user_input: str):
 
     cards, intent, annotations =  None, None, None
 
+    #test show video
+    response = "Hello! @showcards(card) Here is a video."
+
     cards = {
         'card': {
             "type": "video",
