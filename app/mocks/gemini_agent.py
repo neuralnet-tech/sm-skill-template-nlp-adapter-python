@@ -230,7 +230,7 @@ def get_response(user_input: str):
 
     #test show video
     response = "Hello! @showcards(card) Here is a video."
-
+    """
     cards = {
         'card': {
             "type": "video",
@@ -242,8 +242,8 @@ def get_response(user_input: str):
             }
         }
     }
-
     """
+    
     # Add your Cards as required
     cards = {
         "card": {
@@ -255,6 +255,7 @@ def get_response(user_input: str):
         },
     }
 
+    """
     # Add your Intent as required
     intent = Intent(
         name="Welcome",
