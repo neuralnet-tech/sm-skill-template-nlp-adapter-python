@@ -227,6 +227,19 @@ def get_response(user_input: str):
         
 
     cards, intent, annotations =  None, None, None
+
+    cards = {
+        'card': {
+            "type": "video",
+            "id": "youtubeVideo",
+                "data": {
+                    "videoId":"Bhkm6fZMJcI",
+                    "autoplay":"true",
+                    "autoclose":"true"
+            }
+        }
+    }
+
     """
     # Add your Cards as required
     cards = {
