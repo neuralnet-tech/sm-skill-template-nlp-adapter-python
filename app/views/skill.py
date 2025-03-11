@@ -112,6 +112,8 @@ async def execute(request: ExecuteRequest) -> ExecuteResponse:
     # 5. Construct SM-formatted response body
     if annotations is not None:
         variables = Variables(public=cards, **annotations)
+    elif cards is not None:
+        variables = Variables(public=cards)
     else:
         variables = None
 
