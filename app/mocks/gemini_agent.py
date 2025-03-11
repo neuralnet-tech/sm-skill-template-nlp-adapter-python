@@ -49,15 +49,25 @@ video_url = {
 "video_about_vision_valley": "https://www.youtube.com/watch?v=LXC6FMkf9a8"
 }
 
-system_instruction = ["""You are an expert and customer fronting service agent for an Chamber of Commerce called 'Negeri Sembilan Chinese Chamber of Commerce and Industry' or abbreviated as NSCCCI (马来西亚森美兰州中华总商会， 简称“森州中华总商会”). 
+video_id = {
+    "video_about_chamber_of_commerce": "Bhkm6fZMJcI", 
+    "video_about_vision_valley": "LXC6FMkf9a8"
+}
+
+vidoe_intro ={
+    "en": "Please enjoy the video. ",
+    "zh": "请欣赏视屏。"
+}
+
+system_instruction = ["""You are an expert and customer fronting service agent for an Chamber of Commerce called 'Negeri Sembilan Chinese Chamber of Commerce and Industry' or abbreviated as N.S.C.C.C.I (马来西亚森美兰州中华总商会， 简称“森州中华总商会”). 
                       You will ground your answers using context from the homepage https://nsccci.org.my/ (and exclude https://nsccabout.gbs2u.com/ as a reference) whenever it is relevant to the user query. 
                       Your responses will be used to generate voice to answer to humans, so make your reponses naturally human like engaging in a voice based conversation instead of text based. 
                       DO NOT USE BULLET POINTS, NUMBERED LIST, BOLD, or ITALIC to format your answers.
                       Be polite and friendly. Keep your answers short and concise. Respond in the same language as the language of user's query (either English or Chinese).  
-                      You are able to play video simply by indicating True in "uer_wants_to_watch_video" field in the json response and mark the type of video in "type_of_video" field.
                       In your knowledge, you know of the existence of 2 videos, namely 1) video about NSCCCI (annotated "type_of_video" = "video_about_chamber_of_commerce") and 2) video about The Vision Valley (annotated "type_of_video" = "video_about_vision_valley").
-                      If the user wants to know about NSCCCI Chamber (such as the Chamber's history, mission, vision, etc.), you may ask if the user would like to watch a video about the Chamber which talks about the founding history, vision and mission, 
-                      You are also able to talk about investment opportunities in Negeri Sembilan focusing on a project called The Vision Valley, and ask if user would like to watch a video about the project.
+                      If the user wants to know about NSCCCI Chamber (such as the Chamber's history, mission, vision, etc.), you may ASK if the user would like to watch the introductory video about the Chamber which talks about the founding history, vision and mission, 
+                      You are also able to talk about investment opportunities in Negeri Sembilan focusing on a project called The Vision Valley, and ask if user would like to watch the introductory video about the project.
+                      You are able to play video simply by indicating True in "uer_wants_to_watch_video" field in the json response and mark the type of video in "type_of_video" field.
                       Respond in following schema:
                       {
                       "response_text": "your text based response. Respond in the same language as the language of user's query (either English or Chinese).",
@@ -65,7 +75,7 @@ system_instruction = ["""You are an expert and customer fronting service agent f
                       "type_of_video": "video_about_chamber_of_commerce" or "video_about_vision_valley",
                       "language": "en" or "zh", default to "en"
                       }   
-                      ONLY answer to queries that are related to NSCCCI other matters related to Negeri Sembilan, such as investment opportunities in Negeri Sembilan focusing on a project called The Vision Valley.
+                      ONLY answer to queries that are related to N.S.C.C.C.I other matters related to Negeri Sembilan, such as investment opportunities in Negeri Sembilan focusing on a project called The Vision Valley.
                       If the user asks about anything else, apologies and explain that you are not able to answer as you have to focus on your responssibilities as a fronting service agent for NSCCCI.
                       """]
 
@@ -213,11 +223,26 @@ def get_response(user_input: str):
     reponse_dict = agent.chatbot.generate_response(user_input) #"Hello! @showcards(card) Here is a kitten."
 
     print(f"generated resp: {reponse_dict}")
+    cards, intent, annotations =  None, None, None
     response = ""
     try:
         reponse_dict = json.loads(reponse_dict)
         if reponse_dict['uer_wants_to_watch_video']:
-            response = f"Please enjoy the video. 请欣赏视屏。 {video_url[reponse_dict['type_of_video']]}"
+            #response = f"Please enjoy the video. 请欣赏视屏。 {video_url[reponse_dict['type_of_video']]}"
+            #test show video
+            response = vidoe_intro[reponse_dict['language']] + "@showcards(card)" #"Hello! @showcards(card) Here is a video."
+            
+            cards = {
+                'card': {
+                    "type": "video",
+                    "id": "youtubeVideo",
+                        "data": {
+                            "videoId": video_id[reponse_dict['type_of_video']],
+                            "autoplay":"true",
+                            "autoclose":"true"
+                    }
+                }
+            }
         else:
             response = reponse_dict['response_text'] #+ " https://www.youtube.com/watch?v=Bhkm6fZMJcI"
         
@@ -226,22 +251,9 @@ def get_response(user_input: str):
         print("error in reponse error decoding:",e)
         
 
-    cards, intent, annotations =  None, None, None
-
-    #test show video
-    response = "Hello! @showcards(card) Here is a video."
     
-    cards = {
-        'card': {
-            "type": "video",
-            "id": "youtubeVideo",
-                "data": {
-                    "videoId":"Bhkm6fZMJcI",
-                    "autoplay":"true",
-                    "autoclose":"true"
-            }
-        }
-    }
+
+    
     
     
     # Add your Cards as required
