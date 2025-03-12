@@ -46,12 +46,12 @@ Below is the context for videos you are able to show:
 
 video_url = {
 "video_about_chamber_of_commerce": "https://www.youtube.com/embed/Bhkm6fZMJcI?autoplay=1&mute=0", #"https://www.youtube.com/watch?v=Bhkm6fZMJcI",
-"video_about_vision_valley": "https://www.youtube.com/watch?v=LXC6FMkf9a8"
+"video_about_vision_valley": "https://www.youtube.com/watch?v=GgUYagMYkkg"
 }
 
 video_id = {
     "video_about_chamber_of_commerce": "Bhkm6fZMJcI", 
-    "video_about_vision_valley": "LXC6FMkf9a8"
+    "video_about_vision_valley": "GgUYagMYkkg"
 }
 
 vidoe_intro ={
