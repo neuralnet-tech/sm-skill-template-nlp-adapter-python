@@ -71,7 +71,7 @@ system_instruction = ["""You are an expert and customer fronting service agent f
                       Respond in following schema:
                       {
                       "response_text": "your text based response. Respond in the same language as the language of user's query (either English or Chinese).",
-                      "uer_wants_to_watch_video": boolean true if user wants/wishes/intends to watch video false otherwise,
+                      "uer_wants_to_watch_video": boolean true if user wants/wishes/intends to watch video false otherwise, or answer yes to your previous invitation question to watch the video.
                       "type_of_video": "video_about_chamber_of_commerce" or "video_about_vision_valley",
                       "language": "en" or "zh", default to "en"
                       }   
