@@ -15,6 +15,13 @@ from vertexai.preview.generative_models import grounding
 from typing import List, Optional
 import json
 
+# Add these after the other global variables
+_person_data = ""
+
+def set_person_data(data):
+    global _person_data
+    _person_data = data
+
 
 def get_nonstreaming_text_response (response):
     return response.candidates[0].content.parts[0]._raw_part.text
@@ -80,7 +87,6 @@ system_instruction = ["""You are an expert and customer fronting service agent f
                       """]
 
 
-BOT_WELCOME_MESSAGE = "Hello 你好，我是小美. 我是森州中华总商会人工智能助手. 请问有什么可以帮到你？"
 
 MEMORY_WINDOW_SIZE = 20
 
@@ -195,7 +201,8 @@ def init_resources(session_id: str) -> List[Memory]:
 
 def get_welcome_response():
     # standard welcome message
-    response = BOT_WELCOME_MESSAGE
+    
+    response = f"Hello {_person_data} 你好，我是小美. 我是森州中华总商会人工智能助手. 请问有什么可以帮到你？"
 
     intent = Intent(
         name="Welcome",

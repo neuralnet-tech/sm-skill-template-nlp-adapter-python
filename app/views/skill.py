@@ -5,13 +5,10 @@ from ..services.fake_nlp_service import FakeNLPService
 
 # Add these near the top of the file with other imports
 from fastapi import Request, HTTPException
-import threading
 import sys
 
+from ..mocks.gemini_agent import set_person_data
 
-# Add these after the other global variables
-_person_data = None
-_person_lock = threading.Lock()  # Thread-safe access to person data
 
 from smskillsdk.models.api import (
     InitRequest,
@@ -34,12 +31,13 @@ router = APIRouter(
 
 @router.post("/face-detection", status_code=200)
 async def handle_face_detection(request: Request):
-    global _person_data
     try:
         data = await request.json()
         # Process the data
-        _person_data = data["person"]
-        print("Received face detection data:", _person_data)
+        person_data = data["person"]
+
+        set_person_data(person_data)
+        #print("Received face detection data:", _person_data)
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
