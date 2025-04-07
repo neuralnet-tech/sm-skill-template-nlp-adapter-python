@@ -37,7 +37,7 @@ async def handle_face_detection(request: Request):
         person_data = data["person"]
 
         set_person_data(person_data)
-        #print("Received face detection data:", _person_data)
+        print("Received face detection data:", person_data)
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 

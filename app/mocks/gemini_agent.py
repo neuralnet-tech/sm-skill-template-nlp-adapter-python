@@ -21,6 +21,7 @@ _person_data = ""
 def set_person_data(data):
     global _person_data
     _person_data = data
+    print("set person data:", _person_data)
 
 
 def get_nonstreaming_text_response (response):
