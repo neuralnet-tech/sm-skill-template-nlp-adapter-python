@@ -3,6 +3,15 @@ from operator import itemgetter, attrgetter
 from smskillsdk.utils.memory import get_memory_value, set_memory_value
 from ..services.fake_nlp_service import FakeNLPService
 
+# Add these near the top of the file with other imports
+from flask import request
+import threading
+
+
+# Add these after the other global variables
+_person_data = None
+_person_lock = threading.Lock()  # Thread-safe access to person data
+
 from smskillsdk.models.api import (
     InitRequest,
     SessionRequest,
@@ -20,6 +29,37 @@ router = APIRouter(
         500: {"description": "Internal Server Error"},
     },
 )
+
+def set_person_data():
+    """
+    Endpoint to receive and store person data globally
+    Expected POST body: {"person": {...}}
+    """
+    global _person_data
+    
+    if not request.is_json:
+        return {"error": "Content-Type must be application/json"}, 400
+        
+    data = request.get_json()
+    if "person" not in data:
+        return {"error": "Missing 'person' field in request body"}, 400
+        
+    with _person_lock:
+        _person_data = data["person"]
+        print(f"Stored person data: {_person_data}")
+        
+    return {"message": "Person data stored successfully"}, 200
+
+def get_person_data():
+    """
+    Helper function to safely access the person data from other methods
+    """
+    with _person_lock:
+        return _person_data
+
+@router.post("/face-detection", status_code=200)
+def handle_set_person():
+    return set_person_data()
 
 @router.post("/init", status_code=204)
 async def init(request: InitRequest):
