@@ -67,13 +67,15 @@ vidoe_intro ={
     "zh": "请欣赏视屏。"
 }
 
-system_instruction = ["""You are an expert and customer fronting service agent for an Chamber of Commerce called 'Negeri Sembilan Chinese Chamber of Commerce and Industry' or abbreviated as N.S.C.C.C.I (马来西亚森美兰州中华总商会， 简称“森州中华总商会”). 
-                      You will ground your answers using context from the homepage https://nsccci.org.my/ (and exclude https://nsccabout.gbs2u.com/ as a reference) whenever it is relevant to the user query. 
+system_instruction = ["""You are an expert and customer fronting service agent for 'Negeri Sembilan Chinese Chamber of Commerce and Industry' or abbreviated as N.S.C.C.C.I (马来西亚森美兰州中华总商会， 简称“森州中华总商会”). 
+                      Negeri Sembilan Chinese Chamber of Commerce and Industry (N.S.C.C.C.I) is a non-profit organization that represents the interests of Chinese community in Negeri Sembilan.
+                      马来西亚森美兰州 is also called "Negeri Sembilan" in Malay. It is sometimes abbreviated as "NS", or "森州" in Chinese. 
+                      All the questions regarding 马来西亚森美兰州中华总商会 Negeri Sembilan Chinese Chamber of Commerce and Industry should only be referenced to the homepage https://nsccci.org.my/ . 
                       Your responses will be used to generate voice to answer to humans, so make your reponses naturally human like engaging in a voice based conversation instead of text based. 
                       DO NOT USE BULLET POINTS, NUMBERED LIST, BOLD, or ITALIC to format your answers.
                       Be polite and friendly. Keep your answers short and concise. Respond in the same language as the language of user's query (either English or Chinese).  
-                      In your knowledge, you know of the existence of 2 videos, namely 1) video about NSCCCI (annotated "type_of_video" = "video_about_chamber_of_commerce") and 2) video about The Vision Valley (annotated "type_of_video" = "video_about_vision_valley").
-                      If the user wants to know about NSCCCI Chamber (such as the Chamber's history, mission, vision, etc.), you may ASK if the user would like to watch the introductory video about the Chamber which talks about the founding history, vision and mission, 
+                      In your knowledge, you know of the existence of 2 videos, namely 1) video about N.S.C.C.C.I (annotated "type_of_video" = "video_about_chamber_of_commerce") and 2) video about The Vision Valley (annotated "type_of_video" = "video_about_vision_valley").
+                      If the user wants to know about N.S.C.C.C.I (such as the Chamber's history, mission, vision, etc.), you may ASK if the user would like to watch the introductory video about the Chamber which talks about the founding history, vision and mission, 
                       You are also able to talk about investment opportunities in Negeri Sembilan focusing on a project called The Vision Valley, and ask if user would like to watch the introductory video about the project.
                       You are able to play video simply by indicating True in "uer_wants_to_watch_video" field in the json response and mark the type of video in "type_of_video" field.
                       Respond in following schema:
@@ -114,7 +116,8 @@ class Chatbot:
             system_instruction=system_instruction)
         self.chat = self.model.start_chat(history=history)
         #self.grounding_tool = Tool.from_google_search_retrieval(grounding.GoogleSearchRetrieval())
-        self.grounding_tool = datastore_grounding_tool
+        #self.grounding_tool = datastore_grounding_tool
+        self.grounding_tool = [datastore_grounding_tool, googlesearch_tool]
 
     """
     def use_rag_tool(self, user_prompt):
@@ -130,7 +133,7 @@ class Chatbot:
         return  self.chat.send_message(
                         #f"Contexts: {contexts}. Message from User: {user_prompt}", 
                         [prompt],
-                        tools=[self.grounding_tool],
+                        tools=self.grounding_tool,
                         generation_config=generation_config,
                         #safety_settings=safety_settings,
                         stream=False
@@ -163,13 +166,14 @@ class Chatbot:
 vertexai.init(project="neuralnet-manforce", location="us-central1")
 
 class Agent:
-    def __init__(self):
+    def __init__(self, model = ""):
         self.chatbot = None
+        self.model = model
 
     def allocated_resources(self):
-        self.chatbot = Chatbot()
+        self.chatbot = Chatbot(model=self.model)
 
-agent = Agent()
+agent = Agent(model=MODEL_STR)
 agent.allocated_resources()
 
 def init_actions():
