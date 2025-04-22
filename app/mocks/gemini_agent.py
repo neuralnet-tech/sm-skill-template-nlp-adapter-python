@@ -93,7 +93,7 @@ system_instruction = ["""You are an expert and customer fronting service agent f
 
 MEMORY_WINDOW_SIZE = 20
 
-DATA_STORE_ID="acccim-ns_1740458649382"
+DATA_STORE_ID="nsccci-kb_1745222443136" #"acccim-ns_1740458649382"
 DATA_STORE_REGION="us"
 project_id="neuralnet-manforce"
 datastore = f"projects/{project_id}/locations/{DATA_STORE_REGION}/collections/default_collection/dataStores/{DATA_STORE_ID}"
@@ -115,10 +115,8 @@ class Chatbot:
             model,
             system_instruction=system_instruction)
         self.chat = self.model.start_chat(history=history)
-        #self.grounding_tool = Tool.from_google_search_retrieval(grounding.GoogleSearchRetrieval())
-        #self.grounding_tool = [datastore_grounding_tool]
-        #self.grounding_tool = [datastore_grounding_tool, googlesearch_tool]
-        self.grounding_tool = [googlesearch_tool]
+        self.grounding_tool = [datastore_grounding_tool]
+        #self.grounding_tool = [googlesearch_tool]
 
     """
     def use_rag_tool(self, user_prompt):
