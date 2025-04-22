@@ -5,5 +5,5 @@ smskillsdk
 uvicorn
 vertexai
 google-cloud-aiplatform>=1.38
-#google-genai
+google-genai
 pydantic<2
