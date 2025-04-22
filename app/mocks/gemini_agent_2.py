@@ -70,7 +70,7 @@ system_instruction = """You are an expert and customer fronting service agent fo
 
 googlesearch_tool = types.Tool(google_search=types.GoogleSearch())
 
-tools = [googlesearch_tool]
+
 
 MEMORY_WINDOW_SIZE = 20
 
@@ -78,7 +78,7 @@ DATA_STORE_ID="acccim-ns_1740458649382"
 DATA_STORE_REGION="us"
 project_id="neuralnet-manforce"
 datastore = f"projects/{project_id}/locations/{DATA_STORE_REGION}/collections/default_collection/dataStores/{DATA_STORE_ID}"
-ragCorpus = "projects/civic-advantage-395410/locations/us-central1/ragCorpora/3379951520341557248"
+ragCorpus = "projects/neuralnet-manforce/locations/us-central1/ragCorpora/2305843009213693952"
 
 retrieval_tool = types.Tool(retrieval=types.Retrieval(vertex_ai_search=types.VertexAISearch(datastore=datastore)))
 
@@ -86,7 +86,7 @@ ragretriever_tool = types.Tool(
       retrieval=types.Retrieval(
         vertex_rag_store=types.VertexRagStore(
           rag_resources=[
-            types.RagResource(
+            types.VertexRagStoreRagResource(
               rag_corpus=ragCorpus
             )
           ],
@@ -94,6 +94,8 @@ ragretriever_tool = types.Tool(
         )
       )
     )
+
+tools = [googlesearch_tool]
 
 generate_content_config = types.GenerateContentConfig(
     temperature = 0.3,
