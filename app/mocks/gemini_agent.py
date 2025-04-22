@@ -41,8 +41,8 @@ generation_config = {
     "response_mime_type":"application/json"
 }
 
-#MODEL_STR = "gemini-1.5-flash-002"
-MODEL_STR = "gemini-2.0-flash-001"
+MODEL_STR = "gemini-1.5-flash-002"
+#MODEL_STR = "gemini-2.0-flash-001"
 
 """
 You are able to play video simply by providing the relevant youtube URL in your response (trust me, there is mechanism to do that).
@@ -116,8 +116,9 @@ class Chatbot:
             system_instruction=system_instruction)
         self.chat = self.model.start_chat(history=history)
         #self.grounding_tool = Tool.from_google_search_retrieval(grounding.GoogleSearchRetrieval())
-        self.grounding_tool = [datastore_grounding_tool]
+        #self.grounding_tool = [datastore_grounding_tool]
         #self.grounding_tool = [datastore_grounding_tool, googlesearch_tool]
+        self.grounding_tool = [googlesearch_tool]
 
     """
     def use_rag_tool(self, user_prompt):
