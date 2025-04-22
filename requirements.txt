@@ -6,4 +6,5 @@ uvicorn
 vertexai
 google-cloud-aiplatform>=1.38
 google-genai
-pydantic<2
+pydantic
+#pydantic<2
