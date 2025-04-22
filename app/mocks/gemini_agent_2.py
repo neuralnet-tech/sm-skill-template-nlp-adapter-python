@@ -2,18 +2,15 @@
 These functions use Promises and setTimeouts to mock HTTP requests to a third part NLP service
 and should be replaced with the actual HTTP calls when implementing.
 """
-
-#ref https://docs.soulmachines.com/skills-api/getting-started/nlp-adapter-skill#advanced-concepts
-
 from typing import List
 from smskillsdk.models.common import Memory, MemoryScope, Intent
-import vertexai
-from vertexai.preview import rag
-from vertexai.generative_models import GenerativeModel, Part, FinishReason, Tool, Content
-import vertexai.preview.generative_models as generative_models
-from vertexai.preview.generative_models import grounding
+from google import genai
+from google.genai.chats import Chat
+from google.genai import types
 from typing import List, Optional
 import json
+# use google genai
+#ref https://docs.soulmachines.com/skills-api/getting-started/nlp-adapter-skill#advanced-concepts
 
 # Add these after the other global variables
 _person_data = ""
@@ -24,24 +21,6 @@ def set_person_data(data):
     print("set person data:", _person_data)
 
 
-def get_nonstreaming_text_response (response):
-    return response.candidates[0].content.parts[0]._raw_part.text
-
-safety_settings={
-            generative_models.HarmCategory.HARM_CATEGORY_HATE_SPEECH: generative_models.HarmBlockThreshold.BLOCK_NONE,
-            generative_models.HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: generative_models.HarmBlockThreshold.BLOCK_NONE,
-            generative_models.HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: generative_models.HarmBlockThreshold.BLOCK_NONE,
-            generative_models.HarmCategory.HARM_CATEGORY_HARASSMENT: generative_models.HarmBlockThreshold.BLOCK_NONE,
-        }
-generation_config = {
-    "max_output_tokens": 256,
-    "temperature": 0.3, #0.5,
-    "top_p": 0.9, #0.5, #0.5 better than 0.95
-    "top_k": 40,
-    "response_mime_type":"application/json"
-}
-
-#MODEL_STR = "gemini-1.5-flash-002"
 MODEL_STR = "gemini-2.0-flash-001"
 
 """
@@ -67,7 +46,7 @@ vidoe_intro ={
     "zh": "请欣赏视屏。"
 }
 
-system_instruction = ["""You are an expert and customer fronting service agent for 'Negeri Sembilan Chinese Chamber of Commerce and Industry' or abbreviated as N.S.C.C.C.I (马来西亚森美兰州中华总商会， 简称“森州中华总商会”). 
+system_instruction = """You are an expert and customer fronting service agent for 'Negeri Sembilan Chinese Chamber of Commerce and Industry' or abbreviated as N.S.C.C.C.I (马来西亚森美兰州中华总商会， 简称“森州中华总商会”). 
                       Negeri Sembilan Chinese Chamber of Commerce and Industry (N.S.C.C.C.I) is a non-profit organization that represents the interests of Chinese community in Negeri Sembilan.
                       马来西亚森美兰州 is also called "Negeri Sembilan" in Malay. It is sometimes abbreviated as "NS", or "森州" in Chinese. 
                       All the questions regarding 马来西亚森美兰州中华总商会 Negeri Sembilan Chinese Chamber of Commerce and Industry should only be referenced to the homepage https://nsccci.org.my/. 
@@ -87,9 +66,11 @@ system_instruction = ["""You are an expert and customer fronting service agent f
                       }   
                       ONLY answer to queries that are related to N.S.C.C.C.I other matters related to Negeri Sembilan, such as investment opportunities in Negeri Sembilan focusing on a project called The Vision Valley.
                       If the user asks about anything else, apologies and explain that you are not able to answer as you have to focus on your responssibilities as a fronting service agent for NSCCCI.
-                      """]
+                      """
 
+googlesearch_tool = types.Tool(google_search=types.GoogleSearch())
 
+tools = [googlesearch_tool]
 
 MEMORY_WINDOW_SIZE = 20
 
@@ -97,84 +78,80 @@ DATA_STORE_ID="acccim-ns_1740458649382"
 DATA_STORE_REGION="us"
 project_id="neuralnet-manforce"
 datastore = f"projects/{project_id}/locations/{DATA_STORE_REGION}/collections/default_collection/dataStores/{DATA_STORE_ID}"
-datastore_grounding_tool = Tool.from_retrieval(
-            grounding.Retrieval(
-                grounding.VertexAISearch(
-                    project=project_id,
-                    datastore=DATA_STORE_ID,
-                    location=DATA_STORE_REGION,
-                    #datastore=datastore,
-                    )
-                )
+ragCorpus = "projects/civic-advantage-395410/locations/us-central1/ragCorpora/3379951520341557248"
+
+retrieval_tool = types.Tool(retrieval=types.Retrieval(vertex_ai_search=types.VertexAISearch(datastore=datastore)))
+
+ragretriever_tool = types.Tool(
+      retrieval=types.Retrieval(
+        vertex_rag_store=types.VertexRagStore(
+          rag_resources=[
+            types.RagResource(
+              rag_corpus=ragCorpus
+            )
+          ],
+          similarity_top_k=10,
         )
-googlesearch_tool = Tool.from_google_search_retrieval(grounding.GoogleSearchRetrieval())
+      )
+    )
+
+generate_content_config = types.GenerateContentConfig(
+    temperature = 0.3,
+    top_p = 0.95,
+    max_output_tokens = 256,
+    response_modalities = ["TEXT"],
+    response_mime_type = "application/json",
+    speech_config = types.SpeechConfig(
+      voice_config = types.VoiceConfig(
+        prebuilt_voice_config = types.PrebuiltVoiceConfig(
+          voice_name = "zephyr"
+        )
+      ),
+    ),
+    safety_settings = [types.SafetySetting(
+      category="HARM_CATEGORY_HATE_SPEECH",
+      threshold="OFF"
+    ),types.SafetySetting(
+      category="HARM_CATEGORY_DANGEROUS_CONTENT",
+      threshold="OFF"
+    ),types.SafetySetting(
+      category="HARM_CATEGORY_SEXUALLY_EXPLICIT",
+      threshold="OFF"
+    ),types.SafetySetting(
+      category="HARM_CATEGORY_HARASSMENT",
+      threshold="OFF"
+    )],
+    tools = tools,
+    system_instruction=[types.Part.from_text(text=system_instruction)],
+  )
 
 class Chatbot:
-    def __init__(self, history: Optional[List["Content"]] = None, model: Optional[str] = "gemini-1.5-flash-002", use_search=False):
-        self.model = GenerativeModel(
-            model,
-            system_instruction=system_instruction)
-        self.chat = self.model.start_chat(history=history)
-        #self.grounding_tool = Tool.from_google_search_retrieval(grounding.GoogleSearchRetrieval())
-        self.grounding_tool = [datastore_grounding_tool]
-        #self.grounding_tool = [datastore_grounding_tool, googlesearch_tool]
+    def __init__(self):
+        client = genai.Client(
+            vertexai=True,
+            project="neuralnet-manforce",
+            location="us-central1",
+        )
+        self.model = client.chats.create(
+                        model=MODEL_STR,
+                        config=generate_content_config
+                    )
 
-    """
-    def use_rag_tool(self, user_prompt):
-        return  self.chat.send_message(
-                        user_prompt, 
-                        tools=[tool],
-                        generation_config=generation_config,
-                        #safety_settings=safety_settings,
-                        stream=False
-                        )"""
-    
-    def use_search(self, prompt):
-        return  self.chat.send_message(
-                        #f"Contexts: {contexts}. Message from User: {user_prompt}", 
-                        [prompt],
-                        tools=self.grounding_tool,
-                        generation_config=generation_config,
-                        #safety_settings=safety_settings,
-                        stream=False
-                        )
-
-
-
-    def generate_response(self, user_prompt=""):
-        #prompt = user_prompt
-        #prompt = user_prompt
-
-        if len(self.chat._history):
-            prompt = f"""Your last message was :"{self.chat._history[-1].parts[0]._raw_part.text}" Please respond in the same language as my CURRENT MESSAGE and my CURRENT MESSAGE is :"{user_prompt}". 
-            """
-        else:
-            prompt = user_prompt
-    
-        response = self.use_search(prompt)
-
-        self.chat._history[-2] = Content(
-                role="user",
-                parts=[Part.from_text(user_prompt)]  # Create Part objects
-            )
-        
-        if len(self.chat._history) > MEMORY_WINDOW_SIZE:
-            self.chat._history = self.chat._history[-MEMORY_WINDOW_SIZE:]
-        
-        return get_nonstreaming_text_response(response)
-
-vertexai.init(project="neuralnet-manforce", location="us-central1")
+    def generate_response(self, user_input: str) -> str:
+        response = self.model.send_message(message=[user_input]).text
+        print(f"debug response: {response}", flush=True) #print to std.err
+        return response
 
 class Agent:
-    def __init__(self, model = ""):
+    def __init__(self):
         self.chatbot = None
-        self.model = model
 
     def allocated_resources(self):
-        self.chatbot = Chatbot(model=self.model)
+        self.chatbot = Chatbot()
 
-agent = Agent(model=MODEL_STR)
+agent = Agent()
 agent.allocated_resources()
+
 
 def init_actions():
     """
