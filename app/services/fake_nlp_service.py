@@ -7,14 +7,24 @@ from smskillsdk.models.common import MemoryScope, Intent
 
 _fake_nlp_state = "idle"
 
+def get_fake_nlp_state():
+    return _fake_nlp_state
+def set_fake_nlp_state(state):
+    global _fake_nlp_state
+    _fake_nlp_state = state
+
+
 class FakeNLPService:
     first_credentials: str
     second_credentials: str
+
 
     def __init__(self, first_credentials, second_credentials):
         self.first_credentials = first_credentials
         self.second_credentials = second_credentials
         self.__authenticate()
+        self.get_fake_nlp_state = get_fake_nlp_state
+        self.set_fake_nlp_state = set_fake_nlp_state
 
   
     def __authenticate(self):
@@ -65,17 +75,17 @@ class FakeNLPService:
         """
 
         #manage state here
-        if _fake_nlp_state == "idle":
+        if self.get_fake_nlp_state() == "idle":
             # check if user_input contains wake words [""]
             if "小美" in user_input and "你好" in user_input:
-                _fake_nlp_state = "active"
+                self.set_fake_nlp_state("active")
                 return get_idle_response(isWelcome=True)
             else:
                 return get_idle_response(isWelcome=False)
-        elif _fake_nlp_state == "active":
+        elif self.get_fake_nlp_state() == "active":
             # check if user_input contains wake words ["小美", "你好"]
             if "小美" in user_input and "再见" in user_input:
-                _fake_nlp_state = "idle"
+                self.set_fake_nlp_state("idle")
                 return get_goodbye_response()
             return get_response(user_input)
 
