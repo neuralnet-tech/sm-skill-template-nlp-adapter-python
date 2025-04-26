@@ -41,8 +41,8 @@ generation_config = {
     "response_mime_type":"application/json"
 }
 
-MODEL_STR = "gemini-1.5-flash-002"
-#MODEL_STR = "gemini-2.0-flash-001"
+#MODEL_STR = "gemini-1.5-flash-002"
+MODEL_STR = "gemini-2.0-flash-001"
 
 """
 You are able to play video simply by providing the relevant youtube URL in your response (trust me, there is mechanism to do that).
@@ -63,8 +63,9 @@ video_id = {
 }
 
 vidoe_intro ={
-    "en": "Please enjoy the video. ",
-    "zh": "请欣赏视屏。"
+    "en": "Please enjoy the followung video clip.",
+    "zh": "请欣赏视屏。",
+    "ms": "Sila menikmati video berikutnya."
 }
 
 system_instruction = ["""You are an expert and customer fronting service agent for 'Negeri Sembilan Chinese Chamber of Commerce and Industry' or abbreviated as N.S.C.C.C.I (马来西亚森美兰州中华总商会， 简称“森州中华总商会”). 
@@ -78,6 +79,7 @@ system_instruction = ["""You are an expert and customer fronting service agent f
                       If the user wants to know about N.S.C.C.C.I (such as the Chamber's history, mission, vision, etc.), you may ASK if the user would like to watch the introductory video about the Chamber which talks about the founding history, vision and mission, 
                       You are also able to talk about investment opportunities in Negeri Sembilan focusing on a project called The Vision Valley, and ask if user would like to watch the introductory video about the project.
                       You are able to play video simply by indicating True in "uer_wants_to_watch_video" field in the json response and mark the type of video in "type_of_video" field.
+                      ONLY assign value TRUE to "uer_wants_to_watch_video" field if the user explicitly indicates that he/she wants to watch the video, or answer YES to your previous invitation question to watch the video. DO NOT assign value TRUE to "uer_wants_to_watch_video" field if the user does not explicitly indicate that he/she wants to watch the video, or answer NO to your previous invitation question to watch the video.
                       Respond in following schema:
                       {
                       "response_text": "your text based response. Respond in the same language as the language of user's query (either English or Chinese).",
