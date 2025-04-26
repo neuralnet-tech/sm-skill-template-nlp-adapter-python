@@ -206,7 +206,8 @@ def init_resources(session_id: str) -> List[Memory]:
 def get_welcome_response():
     # standard welcome message
     
-    response = f"Hello {_person_data} 你好，我是小美. 我是森州中华总商会人工智能助手. 请问有什么可以帮到你？"
+    #response = f"Hello {_person_data} 你好，我是小美. 我是森州中华总商会人工智能助手. 请问有什么可以帮到你？"
+    response = ""
 
     intent = Intent(
         name="Welcome",
@@ -221,6 +222,19 @@ def get_welcome_response():
     }
 
     cards = None
+    return response, cards, intent, annotations
+
+def get_goodbye_response(): 
+    cards, intent, annotations =  None, None, None
+    response = "很高兴能为你服务，再见"
+    return response, cards, intent, annotations
+
+def get_idle_response(isWelcome=False): 
+    cards, intent, annotations =  None, None, None
+    if not isWelcome:
+        response = ""
+    else:
+        response = f"Hello {_person_data} 你好，我是小美. 我是森州中华总商会人工智能助手. 请问有什么可以帮到你？"
     return response, cards, intent, annotations
 
 def get_response(user_input: str):

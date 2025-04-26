@@ -1,12 +1,12 @@
 from fastapi import HTTPException
 #from ..mocks.mock_request import mock_get_response, mock_init_resources, mock_init_actions
-from ..mocks.gemini_agent import get_response, init_resources, init_actions, get_welcome_response
+from ..mocks.gemini_agent import get_response, init_resources, init_actions, get_welcome_response, get_goodbye_response, get_idle_response
 #from ..mocks.gemini_agent_2 import get_response, init_resources, init_actions, get_welcome_response
 from smskillsdk.models.common import MemoryScope, Intent
 
 
 
-#test
+#enum of states: ["idle", "active"]
 
 class FakeNLPService:
     first_credentials: str
@@ -16,6 +16,7 @@ class FakeNLPService:
         self.first_credentials = first_credentials
         self.second_credentials = second_credentials
         self.__authenticate()
+        self.state = "idle"
   
     def __authenticate(self):
         """
@@ -64,9 +65,25 @@ class FakeNLPService:
         Example of sending input to the third party NLP call 
         """
 
-        if user_input == "Welcome":
-            return get_welcome_response()
-        else:
+        #manage state here
+        if self.state == "idle":
+            # check if user_input contains wake words [""]
+            if "小美" in user_input and "你好" in user_input:
+                self.state = "active"
+                return get_idle_response(isWelcome=True)
+            else:
+                return get_idle_response(isWelcome=False)
+        elif self.state == "active":
+            # check if user_input contains wake words ["小美", "你好"]
+            if "小美" in user_input and "再见" in user_input:
+                self.state = "idle"
+                return get_goodbye_response()
             return get_response(user_input)
+
+
+        #if user_input == "Welcome":
+        #    return get_welcome_response()
+        #else:
+        #    return get_response(user_input)
 
         
