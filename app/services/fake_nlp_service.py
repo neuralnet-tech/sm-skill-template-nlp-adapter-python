@@ -5,8 +5,7 @@ from ..mocks.gemini_agent import get_response, init_resources, init_actions, get
 from smskillsdk.models.common import MemoryScope, Intent
 
 
-
-#enum of states: ["idle", "active"]
+_fake_nlp_state = "idle"
 
 class FakeNLPService:
     first_credentials: str
@@ -16,7 +15,7 @@ class FakeNLPService:
         self.first_credentials = first_credentials
         self.second_credentials = second_credentials
         self.__authenticate()
-        self.state = "idle"
+
   
     def __authenticate(self):
         """
@@ -66,17 +65,17 @@ class FakeNLPService:
         """
 
         #manage state here
-        if self.state == "idle":
+        if _fake_nlp_state == "idle":
             # check if user_input contains wake words [""]
             if "小美" in user_input and "你好" in user_input:
-                self.state = "active"
+                _fake_nlp_state = "active"
                 return get_idle_response(isWelcome=True)
             else:
                 return get_idle_response(isWelcome=False)
-        elif self.state == "active":
+        elif _fake_nlp_state == "active":
             # check if user_input contains wake words ["小美", "你好"]
             if "小美" in user_input and "再见" in user_input:
-                self.state = "idle"
+                _fake_nlp_state = "idle"
                 return get_goodbye_response()
             return get_response(user_input)
 
