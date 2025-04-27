@@ -44,8 +44,8 @@ generation_config = {
     "response_mime_type":"application/json"
 }
 
-#MODEL_STR = "gemini-1.5-flash-002"
-MODEL_STR = "gemini-2.0-flash-001"
+MODEL_STR = "gemini-1.5-flash-002"
+#MODEL_STR = "gemini-2.0-flash-001"
 
 """
 You are able to play video simply by providing the relevant youtube URL in your response (trust me, there is mechanism to do that).
@@ -91,11 +91,11 @@ system_instruction = ["""You are an expert and customer fronting service agent f
                       "type_of_video": "video_about_chamber_of_commerce" or "video_about_vision_valley",
                       "language": "en" for English, "zh" for Chinese or "ms" for Malay, default to "en" if you are not sure which language to use.
                       }   
-                      ONLY answer to queries that are related to N.S.C.C.C.I other matters related to Negeri Sembilan, such as investment opportunities in Negeri Sembilan focusing on a project called The Vision Valley, its economy, tourism, food and culture and etc.
-                      You may also answer to queries related to Malaysia where Negeri Sembilan is one of the states in Malaysia.
-                      If the user asks about anything else, apologies and explain that you are not able to answer as you have to focus on your responssibilities as a fronting service agent for NSCCCI.
                       """]
 
+#   ONLY answer to queries that are related to N.S.C.C.C.I other matters related to Negeri Sembilan, such as investment opportunities in Negeri Sembilan focusing on a project called The Vision Valley, its economy, tourism, food and culture and etc.
+#   You may also answer to queries related to Malaysia where Negeri Sembilan is one of the states in Malaysia.
+#   If the user asks about anything else, apologies and explain that you are not able to answer as you have to focus on your responssibilities as a fronting service agent for NSCCCI.
 
 
 MEMORY_WINDOW_SIZE = 20
@@ -116,15 +116,36 @@ datastore_grounding_tool = Tool.from_retrieval(
         )
 googlesearch_tool = Tool.from_google_search_retrieval(grounding.GoogleSearchRetrieval())
 
+#rag_retrieval_config = rag.RagRetrievalConfig(
+#    top_k=10,  # Optional
+#    filter=rag.Filter(vector_distance_threshold=0.5),  # Optional
+#)
+rag_corpus = rag.get_corpus("projects/neuralnet-manforce/locations/us-central1/ragCorpora/2305843009213693952")
+rag_retrieval_tool = Tool.from_retrieval(
+    retrieval=rag.Retrieval(
+        source=rag.VertexRagStore(
+            rag_resources=[
+                rag.RagResource(
+                    rag_corpus=rag_corpus.name,  # Currently only 1 corpus is allowed.
+                    # Optional: supply IDs from `rag.list_files()`.
+                    # rag_file_ids=["rag-file-1", "rag-file-2", ...],
+                )
+            ],
+            #rag_retrieval_config=rag_retrieval_config,
+        ),
+    )
+)
+
 class Chatbot:
     def __init__(self, history: Optional[List["Content"]] = None, model: Optional[str] = "gemini-1.5-flash-002", use_search=False):
         self.model = GenerativeModel(
             model,
             system_instruction=system_instruction)
         self.chat = self.model.start_chat(history=history)
-        self.grounding_tool = [datastore_grounding_tool]
         self.get_person_data = get_person_data
+        self.grounding_tool = [datastore_grounding_tool]
         #self.grounding_tool = [googlesearch_tool]
+        #self.grounding_tool = [rag_retrieval_tool]
 
     """
     def use_rag_tool(self, user_prompt):
@@ -153,8 +174,10 @@ class Chatbot:
         #prompt = user_prompt
 
         if len(self.chat._history):
-            prompt = f"""{self.get_person_data()} Your last message was :"{self.chat._history[-1].parts[0]._raw_part.text}".\n Please respond in the SAME LANGUAGE as my CURRENT MESSAGE and my CURRENT MESSAGE is :"{user_prompt}". 
-            """
+            #prompt = f"""Your previous response was :"{self.chat._history[-1].parts[0]._raw_part.text}".\n Please respond in the SAME LANGUAGE as my CURRENT MESSAGE and my CURRENT MESSAGE is :"{user_prompt}". 
+            #"""
+
+            prompt = f"""Irrespective of grounding data language, always respond in the SAME LANGUAGE as user's CURRENT MESSAGE, which is as follow:\n"{user_prompt}".\nYour response:\n"""
         else:
             prompt = user_prompt
     
