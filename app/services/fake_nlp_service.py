@@ -82,14 +82,14 @@ class FakeNLPService:
             #manage state here
             if self.get_fake_nlp_state() == "idle":
                 # check if user_input contains wake words [""]
-                if "小美" in user_input and "你好" in user_input:
+                if ("小美" in user_input or "小米" in user_input) and "你好" in user_input:
                     self.set_fake_nlp_state("active")
                     return get_idle_response(isWelcome=True)
                 else:
                     return get_idle_response(isWelcome=False)
             elif self.get_fake_nlp_state() == "active":
                 # check if user_input contains wake words ["小美", "你好"]
-                if "小美" in user_input and "再见" in user_input:
+                if ("小美" in user_input or "小米" in user_input) and "再见" in user_input:
                     self.set_fake_nlp_state("idle")
                     return get_goodbye_response()
                 return get_response(user_input)
