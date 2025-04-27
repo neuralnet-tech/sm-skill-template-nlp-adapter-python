@@ -73,6 +73,8 @@ class FakeNLPService:
         """
         Example of sending input to the third party NLP call 
         """
+        print(f"State: {self.get_fake_nlp_state()} User said: {user_input}")
+
         if user_input == "Welcome":
             self.set_fake_nlp_state("idle")
             return get_idle_response(isWelcome=False)
@@ -91,6 +93,7 @@ class FakeNLPService:
                 self.set_fake_nlp_state("idle")
                 return get_goodbye_response()
             return get_response(user_input)
+        
 
 
         #if user_input == "Welcome":
