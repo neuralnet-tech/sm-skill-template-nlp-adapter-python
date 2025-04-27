@@ -177,7 +177,7 @@ class Chatbot:
             #prompt = f"""Your previous response was :"{self.chat._history[-1].parts[0]._raw_part.text}".\n Please respond in the SAME LANGUAGE as my CURRENT MESSAGE and my CURRENT MESSAGE is :"{user_prompt}". 
             #"""
 
-            prompt = f"""Respond in the SAME LANGUAGE as user's CURRENT MESSAGE, and user's CURRENT MESSAGE is :"{user_prompt}". Your response:\n"""
+            prompt = f"""Irrespective of grounding data language, always respond in the SAME LANGUAGE as user's CURRENT MESSAGE, which is as follow:\n"{user_prompt}".\nYour response:\n"""
         else:
             prompt = user_prompt
     
