@@ -38,7 +38,7 @@ safety_settings={
         }
 generation_config = {
     "max_output_tokens": 256,
-    "temperature": 0.1, #0.5,
+    "temperature": 0.3, #0.5,
     "top_p": 0.95, #0.5, #0.5 better than 0.95
     "top_k": 40,
     "response_mime_type":"application/json"
@@ -99,7 +99,7 @@ system_instruction = ["""You are an expert and customer fronting service agent f
 
 
 MEMORY_WINDOW_SIZE = 20
-
+# "projects/neuralnet-manforce/locations/us/collections/default_collection/dataStores/nsccci-kb_1745222443136"
 DATA_STORE_ID="nsccci-kb_1745222443136" #"acccim-ns_1740458649382"
 DATA_STORE_REGION="us"
 project_id="neuralnet-manforce"
