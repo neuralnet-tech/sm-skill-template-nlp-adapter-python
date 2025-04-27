@@ -174,7 +174,7 @@ class Chatbot:
         #prompt = user_prompt
 
         if len(self.chat._history):
-            prompt = f"""{self.get_person_data()} Your last message was :"{self.chat._history[-1].parts[0]._raw_part.text}".\n Please respond in the SAME LANGUAGE as my CURRENT MESSAGE and my CURRENT MESSAGE is :"{user_prompt}". 
+            prompt = f"""Your previous response was :"{self.chat._history[-1].parts[0]._raw_part.text}".\n Please respond in the SAME LANGUAGE as my CURRENT MESSAGE and my CURRENT MESSAGE is :"{user_prompt}". 
             """
         else:
             prompt = user_prompt
