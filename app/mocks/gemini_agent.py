@@ -8,7 +8,8 @@ and should be replaced with the actual HTTP calls when implementing.
 from typing import List
 from smskillsdk.models.common import Memory, MemoryScope, Intent
 import vertexai
-from vertexai.preview import rag
+#from vertexai.preview import rag
+from vertexai import rag
 from vertexai.generative_models import GenerativeModel, Part, FinishReason, Tool, Content
 import vertexai.preview.generative_models as generative_models
 from vertexai.preview.generative_models import grounding
@@ -121,6 +122,14 @@ googlesearch_tool = Tool.from_google_search_retrieval(grounding.GoogleSearchRetr
 
 
 rag_corpus = rag.get_corpus("projects/neuralnet-manforce/locations/us-central1/ragCorpora/2305843009213693952")
+
+# Direct context retrieval
+rag_retrieval_config = rag.RagRetrievalConfig(
+    top_k=5,  # Optional
+    filter=rag.Filter(vector_distance_threshold=0.5),  # Optional
+)
+
+
 rag_retrieval_tool = Tool.from_retrieval(
     retrieval=rag.Retrieval(
         source=rag.VertexRagStore(
@@ -131,7 +140,7 @@ rag_retrieval_tool = Tool.from_retrieval(
                     # rag_file_ids=["rag-file-1", "rag-file-2", ...],
                 )
             ],
-            #rag_retrieval_config=rag_retrieval_config,
+            rag_retrieval_config=rag_retrieval_config,
         ),
     )
 )
@@ -143,9 +152,9 @@ class Chatbot:
             system_instruction=system_instruction)
         self.chat = self.model.start_chat(history=history)
         self.get_person_data = get_person_data
-        self.grounding_tool = [datastore_grounding_tool]
+        #self.grounding_tool = [datastore_grounding_tool]
         #self.grounding_tool = [googlesearch_tool]
-        #self.grounding_tool = [rag_retrieval_tool]
+        self.grounding_tool = [rag_retrieval_tool]
 
     """
     def use_rag_tool(self, user_prompt):
