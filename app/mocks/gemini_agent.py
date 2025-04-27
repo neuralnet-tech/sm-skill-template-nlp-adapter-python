@@ -116,10 +116,10 @@ datastore_grounding_tool = Tool.from_retrieval(
         )
 googlesearch_tool = Tool.from_google_search_retrieval(grounding.GoogleSearchRetrieval())
 
-rag_retrieval_config = rag.RagRetrievalConfig(
-    top_k=10,  # Optional
-    filter=rag.Filter(vector_distance_threshold=0.5),  # Optional
-)
+#rag_retrieval_config = rag.RagRetrievalConfig(
+#    top_k=10,  # Optional
+#    filter=rag.Filter(vector_distance_threshold=0.5),  # Optional
+#)
 rag_corpus = rag.get_corpus("projects/neuralnet-manforce/locations/us-central1/ragCorpora/2305843009213693952")
 rag_retrieval_tool = Tool.from_retrieval(
     retrieval=rag.Retrieval(
@@ -131,7 +131,7 @@ rag_retrieval_tool = Tool.from_retrieval(
                     # rag_file_ids=["rag-file-1", "rag-file-2", ...],
                 )
             ],
-            rag_retrieval_config=rag_retrieval_config,
+            #rag_retrieval_config=rag_retrieval_config,
         ),
     )
 )
