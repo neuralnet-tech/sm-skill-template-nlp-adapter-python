@@ -116,10 +116,7 @@ datastore_grounding_tool = Tool.from_retrieval(
         )
 googlesearch_tool = Tool.from_google_search_retrieval(grounding.GoogleSearchRetrieval())
 
-#rag_retrieval_config = rag.RagRetrievalConfig(
-#    top_k=10,  # Optional
-#    filter=rag.Filter(vector_distance_threshold=0.5),  # Optional
-#)
+
 rag_corpus = rag.get_corpus("projects/neuralnet-manforce/locations/us-central1/ragCorpora/2305843009213693952")
 rag_retrieval_tool = Tool.from_retrieval(
     retrieval=rag.Retrieval(
@@ -143,9 +140,9 @@ class Chatbot:
             system_instruction=system_instruction)
         self.chat = self.model.start_chat(history=history)
         self.get_person_data = get_person_data
-        self.grounding_tool = [datastore_grounding_tool]
+        #self.grounding_tool = [datastore_grounding_tool]
         #self.grounding_tool = [googlesearch_tool]
-        #self.grounding_tool = [rag_retrieval_tool]
+        self.grounding_tool = [rag_retrieval_tool]
 
     """
     def use_rag_tool(self, user_prompt):
