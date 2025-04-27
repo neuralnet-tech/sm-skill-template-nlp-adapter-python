@@ -24,7 +24,7 @@ def set_person_data(data):
     print("set person data:", _person_data)
 
 def get_person_data():
-    return _person_data
+    return f"Name of the person talking to you is: {_person_data}.\n" if _person_data else ""
 
 
 def get_nonstreaming_text_response (response):
@@ -151,7 +151,7 @@ class Chatbot:
         #prompt = user_prompt
 
         if len(self.chat._history):
-            prompt = f"""Name of the person talking to you is: {self.get_person_data()}\n. Your last message was :"{self.chat._history[-1].parts[0]._raw_part.text}".\n Please respond in the SAME LANGUAGE as my CURRENT MESSAGE and my CURRENT MESSAGE is :"{user_prompt}". 
+            prompt = f"""{self.get_person_data()} Your last message was :"{self.chat._history[-1].parts[0]._raw_part.text}".\n Please respond in the SAME LANGUAGE as my CURRENT MESSAGE and my CURRENT MESSAGE is :"{user_prompt}". 
             """
         else:
             prompt = user_prompt
