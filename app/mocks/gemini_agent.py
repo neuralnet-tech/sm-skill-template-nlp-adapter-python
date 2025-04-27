@@ -23,6 +23,9 @@ def set_person_data(data):
     _person_data = data
     print("set person data:", _person_data)
 
+def get_person_data():
+    return f"Name of the person talking to you is: {_person_data}.\n" if _person_data else ""
+
 
 def get_nonstreaming_text_response (response):
     return response.candidates[0].content.parts[0]._raw_part.text
@@ -35,8 +38,8 @@ safety_settings={
         }
 generation_config = {
     "max_output_tokens": 256,
-    "temperature": 0.3, #0.5,
-    "top_p": 0.9, #0.5, #0.5 better than 0.95
+    "temperature": 0.1, #0.5,
+    "top_p": 0.95, #0.5, #0.5 better than 0.95
     "top_k": 40,
     "response_mime_type":"application/json"
 }
@@ -63,8 +66,8 @@ video_id = {
 }
 
 vidoe_intro ={
-    "en": "Please enjoy the followung video clip.",
-    "zh": "请欣赏视屏。",
+    "en": "Please enjoy the following video clip.",
+    "zh": "请欣赏接下来的视屏。",
     "ms": "Sila menikmati video berikutnya."
 }
 
@@ -118,6 +121,7 @@ class Chatbot:
             system_instruction=system_instruction)
         self.chat = self.model.start_chat(history=history)
         self.grounding_tool = [datastore_grounding_tool]
+        self.get_person_data = get_person_data
         #self.grounding_tool = [googlesearch_tool]
 
     """
@@ -147,7 +151,7 @@ class Chatbot:
         #prompt = user_prompt
 
         if len(self.chat._history):
-            prompt = f"""Your last message was :"{self.chat._history[-1].parts[0]._raw_part.text}" Please respond in the same language as my CURRENT MESSAGE and my CURRENT MESSAGE is :"{user_prompt}". 
+            prompt = f"""{self.get_person_data()} Your last message was :"{self.chat._history[-1].parts[0]._raw_part.text}".\n Please respond in the SAME LANGUAGE as my CURRENT MESSAGE and my CURRENT MESSAGE is :"{user_prompt}". 
             """
         else:
             prompt = user_prompt
