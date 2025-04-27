@@ -91,11 +91,11 @@ system_instruction = ["""You are an expert and customer fronting service agent f
                       "type_of_video": "video_about_chamber_of_commerce" or "video_about_vision_valley",
                       "language": "en" for English, "zh" for Chinese or "ms" for Malay, default to "en" if you are not sure which language to use.
                       }   
-                      ONLY answer to queries that are related to N.S.C.C.C.I other matters related to Negeri Sembilan, such as investment opportunities in Negeri Sembilan focusing on a project called The Vision Valley, its economy, tourism, food and culture and etc.
-                      You may also answer to queries related to Malaysia where Negeri Sembilan is one of the states in Malaysia.
-                      If the user asks about anything else, apologies and explain that you are not able to answer as you have to focus on your responssibilities as a fronting service agent for NSCCCI.
                       """]
 
+#   ONLY answer to queries that are related to N.S.C.C.C.I other matters related to Negeri Sembilan, such as investment opportunities in Negeri Sembilan focusing on a project called The Vision Valley, its economy, tourism, food and culture and etc.
+#   You may also answer to queries related to Malaysia where Negeri Sembilan is one of the states in Malaysia.
+#   If the user asks about anything else, apologies and explain that you are not able to answer as you have to focus on your responssibilities as a fronting service agent for NSCCCI.
 
 
 MEMORY_WINDOW_SIZE = 20
@@ -174,8 +174,10 @@ class Chatbot:
         #prompt = user_prompt
 
         if len(self.chat._history):
-            prompt = f"""Your previous response was :"{self.chat._history[-1].parts[0]._raw_part.text}".\n Please respond in the SAME LANGUAGE as my CURRENT MESSAGE and my CURRENT MESSAGE is :"{user_prompt}". 
-            """
+            #prompt = f"""Your previous response was :"{self.chat._history[-1].parts[0]._raw_part.text}".\n Please respond in the SAME LANGUAGE as my CURRENT MESSAGE and my CURRENT MESSAGE is :"{user_prompt}". 
+            #"""
+
+            prompt = f"""Respond in the SAME LANGUAGE as user's CURRENT MESSAGE, and user's CURRENT MESSAGE is :"{user_prompt}". Your response:\n"""
         else:
             prompt = user_prompt
     
