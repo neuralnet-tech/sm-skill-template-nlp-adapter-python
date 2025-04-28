@@ -8,8 +8,8 @@ and should be replaced with the actual HTTP calls when implementing.
 from typing import List
 from smskillsdk.models.common import Memory, MemoryScope, Intent
 import vertexai
-#from vertexai.preview import rag
-from vertexai import rag
+from vertexai.preview import rag
+#from vertexai import rag
 from vertexai.generative_models import GenerativeModel, Part, FinishReason, Tool, Content
 import vertexai.preview.generative_models as generative_models
 from vertexai.preview.generative_models import grounding
@@ -75,7 +75,7 @@ vidoe_intro ={
 #                      All the questions regarding 马来西亚森美兰州中华总商会 Negeri Sembilan Chinese Chamber of Commerce and Industry should only be referenced to the homepage https://nsccci.org.my/.
 
 system_instruction = ["""You are an expert and customer fronting service agent for 'Negeri Sembilan Chinese Chamber of Commerce and Industry' or abbreviated as N.S.C.C.C.I (马来西亚森美兰州中华总商会， 简称“森州中华总商会”), to answer questions about NSCCCI, or Negeri Sembilan state itself (economy, tourism, food and culture and etc). 
-                      Negeri Sembilan Chinese Chamber of Commerce and Industry (N.S.C.C.C.I) is a non-profit organization that represents the interests of Chinese community in Negeri Sembilan.
+                      Negeri Sembilan Chinese Chamber of Commerce and Industry (N.S.C.C.C.I) is a non-profit organization that represents the interests of Chinese community in Negeri Sembilan. You can answer questions regarding the NSCCCI Chamber's history, mission, vision, etc.
                       马来西亚森美兰州 is also called "Negeri Sembilan" in Malay. It is sometimes abbreviated as "NS", or "森州" in Chinese.  
                       森美兰州中华总商会现任会长是拿督吕海庭。The President of N.S.C.C.C.I is Dato' Looi Hoi Ting.
                       马来西亚中华总商会(简称中总)现任全国总会长是拿督吴逸平硕士。The President The Associated Chinese Chamber of Commerce and Industry Malaysia (A.C.C.C.I.M) is Datuk Ng Yih Pyng. 
@@ -86,7 +86,7 @@ system_instruction = ["""You are an expert and customer fronting service agent f
                       In your knowledge, you know of the existence of 2 videos, namely 1) video about N.S.C.C.C.I (annotated "type_of_video" = "video_about_chamber_of_commerce") and 2) video about The Vision Valley (annotated "type_of_video" = "video_about_vision_valley").
                       You are able to play video simply by indicating True in "uer_wants_to_watch_video" field in the json response and mark the type of video in "type_of_video" field.
                       ONLY assign value TRUE to "uer_wants_to_watch_video" field if the user explicitly indicates that he/she wants to watch the video, or answer YES to your previous invitation question to watch the video. DO NOT assign value TRUE to "uer_wants_to_watch_video" field if the user does not explicitly indicate that he/she wants to watch the video, or answer NO to your previous invitation question to watch the video.
-                      避免一直重复使用“您好”或“你好”。在适当的时候则可以。避免一直问是否要播放视屏, 让user主动要求。
+                      避免使用“您好”或“你好”。避免一直问是否要播放视屏, 让user主动要求。
                       Respond in following schema:
                       {
                       "response_text": "your text based response. Respond in the same language as the language of user's query (either English or Chinese).",
@@ -125,10 +125,10 @@ googlesearch_tool = Tool.from_google_search_retrieval(grounding.GoogleSearchRetr
 rag_corpus = rag.get_corpus("projects/neuralnet-manforce/locations/us-central1/ragCorpora/2305843009213693952")
 
 # Direct context retrieval
-rag_retrieval_config = rag.RagRetrievalConfig(
-    top_k=5,  # Optional
-    filter=rag.Filter(vector_distance_threshold=0.5),  # Optional
-)
+#rag_retrieval_config = rag.RagRetrievalConfig(
+#    top_k=5,  # Optional
+#    filter=rag.Filter(vector_distance_threshold=0.5),  # Optional
+#)
 
 
 rag_retrieval_tool = Tool.from_retrieval(
@@ -141,7 +141,7 @@ rag_retrieval_tool = Tool.from_retrieval(
                     # rag_file_ids=["rag-file-1", "rag-file-2", ...],
                 )
             ],
-            rag_retrieval_config=rag_retrieval_config,
+            #rag_retrieval_config=rag_retrieval_config,
         ),
     )
 )
@@ -153,9 +153,9 @@ class Chatbot:
             system_instruction=system_instruction)
         self.chat = self.model.start_chat(history=history)
         self.get_person_data = get_person_data
-        #self.grounding_tool = [datastore_grounding_tool]
+        self.grounding_tool = [datastore_grounding_tool]
         #self.grounding_tool = [googlesearch_tool]
-        self.grounding_tool = [rag_retrieval_tool]
+        #self.grounding_tool = [rag_retrieval_tool]
 
     """
     def use_rag_tool(self, user_prompt):
