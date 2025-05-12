@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 #from ..mocks.mock_request import mock_get_response, mock_init_resources, mock_init_actions
-from ..mocks.gemini_agent import get_response, init_resources, init_actions, get_welcome_response, get_goodbye_response, get_idle_response
+from ..mocks.gemini_agent import get_response, init_resources, init_actions, get_welcome_response, get_goodbye_response, get_idle_response, get_hello_response
 #from ..mocks.gemini_agent_2 import get_response, init_resources, init_actions, get_welcome_response
 from smskillsdk.models.common import MemoryScope, Intent
 
@@ -78,6 +78,9 @@ class FakeNLPService:
         if user_input == "Welcome":
             self.set_fake_nlp_state("idle")
             return get_idle_response(isWelcome=False)
+        elif user_input == "Mayday1234":
+            self.set_fake_nlp_state("active")
+            return get_hello_response()
         else:
             #manage state here
             if self.get_fake_nlp_state() == "idle":

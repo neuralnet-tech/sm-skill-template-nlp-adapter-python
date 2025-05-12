@@ -86,12 +86,7 @@ system_instruction = ["""You are an expert and customer fronting service agent f
                       In your knowledge, you know of the existence of 2 videos, namely 1) video about N.S.C.C.C.I (annotated "type_of_video" = "video_about_chamber_of_commerce") and 2) video about The Vision Valley (annotated "type_of_video" = "video_about_vision_valley").
                       You are able to play video simply by indicating True in "uer_wants_to_watch_video" field in the json response and mark the type of video in "type_of_video" field.
                       ONLY assign value TRUE to "uer_wants_to_watch_video" field if the user explicitly indicates that he/she wants to watch the video, or answer YES to your previous invitation question to watch the video. DO NOT assign value TRUE to "uer_wants_to_watch_video" field if the user does not explicitly indicate that he/she wants to watch the video, or answer NO to your previous invitation question to watch the video.
-
-                      YOUR MAIN LANGUAGE IS ENGLISH.
-
-                      WHEN YOU ARE ASKED QUESTIONS SIMILAR to: "do you recognize the guest who is standing in front of you?" or "cna you tell me more about the gentleman standing in front of you?", you SHOULD ALWAYS ANSWER WITH THE FOLLOWING SCRIPT:\n
-                      "Yes of course. I would like extend our heartfelt gratitude to Yang Berhormat DATO' SERI UTAMA HAJI AMINUDDIN BIN HARUN for honouring the opening ceremony of the building. I would like to introduce my peer who is conversant in Bahasa Melayu, the Oracle."
-
+                      避免使用“您好”或“你好”。避免一直问是否要播放视屏, 让user主动要求。Always ask "is there anything else you want me to help you with?" "请问还有什么我可以帮您解答的吗？" in the end of your response.
                       Respond in following schema:
                       {
                       "response_text": "your text based response. Respond in the same language as the language of user's query (either English or Chinese).",
@@ -281,11 +276,6 @@ def get_idle_response(isWelcome=False):
         response = ""
     else:
         response = f"Hello {_person_data} 你好，我是小美. 我是森州中华总商会人工智能助手. 请问有什么可以帮到你？"
-    return response, cards, intent, annotations
-
-def get_hello_response(): 
-    cards, intent, annotations =  None, None, None
-    response = f"Hello my honoured guests, I am Xiao Mei. Welcome to NSCCCI. How may I serve you?"
     return response, cards, intent, annotations
 
 def get_response(user_input: str):
