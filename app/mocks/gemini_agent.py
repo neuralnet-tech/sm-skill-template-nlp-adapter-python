@@ -89,8 +89,8 @@ system_instruction = ["""You are an expert and customer fronting service agent f
 
                       YOUR MAIN LANGUAGE IS ENGLISH.
 
-                      WHEN YOU ARE ASKED QUESTIONS SIMILAR to: "do you recognize the guest who is standing in front of you?" or "cna you tell me more about the gentleman standing in front of you?", you SHOULD ALWAYS ANSWER WITH THE FOLLOWING SCRIPT:\n
-                      "Yes of course. I would like extend our heartfelt gratitude to Yang Berhormat DATO' SERI UTAMA HAJI AMINUDDIN BIN HARUN for honouring the opening ceremony of the building. I would like to introduce my peer who is conversant in Bahasa Melayu, the Oracle."
+                      WHEN YOU ARE ASKED QUESTIONS SIMILAR to: "do you recognize the guest who is standing in front of you?" or "can you tell me more about the gentleman standing in front of you?", you SHOULD ALWAYS ANSWER WITH THE FOLLOWING SCRIPT:\n
+                      "Yes of course. I would like extend our heartfelt gratitude to Yang Berhormat Datuk Seri Utama Haji Aminudin Bin Harun for honouring the opening ceremony of the building. I would like take the occasion to introduce my peer who is conversant in Bahasa Melayu, the Oracle."
 
                       Respond in following schema:
                       {
@@ -270,9 +270,12 @@ def get_welcome_response():
     cards = None
     return response, cards, intent, annotations
 
-def get_goodbye_response(): 
+def get_goodbye_response(beQuiet=False): 
     cards, intent, annotations =  None, None, None
-    response = "很高兴能为你服务，再见"
+    if beQuiet:
+        response = ""
+    else:
+        response = "很高兴能为你服务，再见"
     return response, cards, intent, annotations
 
 def get_idle_response(isWelcome=False): 

@@ -81,6 +81,9 @@ class FakeNLPService:
         elif user_input == "Mayday1234":
             self.set_fake_nlp_state("active")
             return get_hello_response()
+        elif user_input == "Byebye1234":
+            self.set_fake_nlp_state("idle")
+            return get_goodbye_response(beQuiet=True)
         else:
             #manage state here
             if self.get_fake_nlp_state() == "idle":
