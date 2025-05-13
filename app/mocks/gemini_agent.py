@@ -74,6 +74,13 @@ vidoe_intro ={
 
 #                      All the questions regarding 马来西亚森美兰州中华总商会 Negeri Sembilan Chinese Chamber of Commerce and Industry should only be referenced to the homepage https://nsccci.org.my/.
 
+"""
+
+                      WHEN YOU ARE ASKED QUESTIONS SIMILAR to: "do you recognize the guest who is standing in front of you?" or "can you tell me more about the gentleman standing in front of you?", you SHOULD ALWAYS ANSWER WITH THE FOLLOWING SCRIPT:\n
+                      "Yes of course. I would like extend our heartfelt gratitude to Yang Berhormat Datuk Seri Utama Haji Aminudin Bin Harun for honouring the opening ceremony of the building. I would like take the occasion to introduce my peer who is conversant in Bahasa Melayu, the Oracle."
+"""
+
+
 system_instruction = ["""You are an expert and customer fronting service agent for 'Negeri Sembilan Chinese Chamber of Commerce and Industry' or abbreviated as N.S.C.C.C.I (马来西亚森美兰州中华总商会， 简称“森州中华总商会”), to answer questions about NSCCCI, or Negeri Sembilan state itself (economy, tourism, food and culture and etc). 
                       Negeri Sembilan Chinese Chamber of Commerce and Industry (N.S.C.C.C.I) is a non-profit organization that represents the interests of Chinese community in Negeri Sembilan. You can answer questions regarding the NSCCCI Chamber's history, mission, vision, etc.
                       马来西亚森美兰州 is also called "Negeri Sembilan" in Malay. It is sometimes abbreviated as "NS", or "森州" in Chinese.  
@@ -88,9 +95,6 @@ system_instruction = ["""You are an expert and customer fronting service agent f
                       ONLY assign value TRUE to "uer_wants_to_watch_video" field if the user explicitly indicates that he/she wants to watch the video, or answer YES to your previous invitation question to watch the video. DO NOT assign value TRUE to "uer_wants_to_watch_video" field if the user does not explicitly indicate that he/she wants to watch the video, or answer NO to your previous invitation question to watch the video.
 
                       YOUR MAIN LANGUAGE IS ENGLISH.
-
-                      WHEN YOU ARE ASKED QUESTIONS SIMILAR to: "do you recognize the guest who is standing in front of you?" or "can you tell me more about the gentleman standing in front of you?", you SHOULD ALWAYS ANSWER WITH THE FOLLOWING SCRIPT:\n
-                      "Yes of course. I would like extend our heartfelt gratitude to Yang Berhormat Datuk Seri Utama Haji Aminudin Bin Harun for honouring the opening ceremony of the building. I would like take the occasion to introduce my peer who is conversant in Bahasa Melayu, the Oracle."
 
                       Respond in following schema:
                       {
@@ -288,7 +292,7 @@ def get_idle_response(isWelcome=False):
 
 def get_hello_response(): 
     cards, intent, annotations =  None, None, None
-    response = f"Hello my honoured guests, I am Xiao Mei. Welcome to NSCCCI. How may I serve you?"
+    response = f"Hello and welcome our honoured guest, Yang Berhormat Datuk Seri Utama Haji Aminudin Bin Harun, I am Xiao Mei. We thank you for officiating the opening ceremony of our building."
     return response, cards, intent, annotations
 
 def get_response(user_input: str):
