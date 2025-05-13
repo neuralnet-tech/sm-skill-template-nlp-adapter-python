@@ -292,7 +292,7 @@ def get_idle_response(isWelcome=False):
 
 def get_hello_response(): 
     cards, intent, annotations =  None, None, None
-    response = f"Hello and welcome our honoured guest, Yang Berhormat Datuk Seri Utama Haji Aminudin Bin Harun, I am Xiao Mei. We thank you for officiating the opening ceremony of our building."
+    response = f"Hello and welcome our honoured guests, Yang Amat Berhormat Datuk Seri Utama Haji Aminudin Bin Harun. Menteri Besar of Negeri Seremban. I am Xiao Mei. We thank you for officiating the opening ceremony of our building. How may I assist you?"
     return response, cards, intent, annotations
 
 def get_response(user_input: str):
