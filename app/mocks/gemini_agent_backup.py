@@ -275,7 +275,8 @@ def get_idle_response(isWelcome=False):
     if not isWelcome:
         response = ""
     else:
-        response = f"Hello {_person_data} 你好，我是小美. 我是森州中华总商会人工智能助手. 请问有什么可以帮到你？"
+        #response = f"Hello {_person_data} 你好，我是小美. 我是森州中华总商会人工智能助手. 请问有什么可以帮到你？"
+        response = f"Hello! How may I assist you?"
     return response, cards, intent, annotations
 
 def get_response(user_input: str):
