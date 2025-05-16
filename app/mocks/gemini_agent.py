@@ -335,35 +335,4 @@ def get_response(user_input: str):
         print("error in reponse error decoding:",e)
         
 
-    
-
-    
-    
-    
-    # Add your Cards as required
-    """cards = {
-        "card": {
-            "type": "image",
-            "data": {
-                "url": "https://placekitten.com/200/200",
-                "alt": "An adorable kitten",
-            },
-        },
-    }"""
-
-    """
-    # Add your Intent as required
-    intent = Intent(
-        name="Welcome",
-        confidence=1,
-    )
-  
-    # If applicable, add your conversation annotations to see metrics for your Skill on Studio Insights
-    annotations = {
-        "conv_tag": "Skill.BaseTemplate", 
-        "conv_id": intent.name, 
-        "conv_intent": intent.name, 
-        "conv_type": "Entry",
-    }"""
-
     return response, cards, intent, annotations
