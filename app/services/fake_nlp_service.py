@@ -2,7 +2,7 @@ from fastapi import HTTPException
 #from ..mocks.mock_request import mock_get_response, mock_init_resources, mock_init_actions
 #from ..mocks.gemini_agent import get_response, init_resources, init_actions, get_welcome_response, get_goodbye_response, get_idle_response, get_hello_response
 from ..mocks.gemini_agent_2_mediaNight import get_response, init_resources, init_actions, get_welcome_response, get_goodbye_response, get_idle_response, get_hello_response
-from smskillsdk.models.common import MemoryScope, Intent
+from app.smskillsdk.models.common import MemoryScope, Intent
 
 
 _fake_nlp_state = "idle"

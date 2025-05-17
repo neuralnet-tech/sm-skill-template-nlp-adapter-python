@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from operator import itemgetter, attrgetter
-from smskillsdk.utils.memory import get_memory_value, set_memory_value
+from app.smskillsdk.utils.memory import get_memory_value, set_memory_value
 from ..services.fake_nlp_service import FakeNLPService
 
 # Add these near the top of the file with other imports
@@ -10,7 +10,7 @@ import sys
 from ..mocks.gemini_agent import set_person_data
 
 
-from smskillsdk.models.api import (
+from app.smskillsdk.models.api import (
     InitRequest,
     SessionRequest,
     SessionResponse,

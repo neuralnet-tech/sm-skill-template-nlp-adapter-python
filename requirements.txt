@@ -1,7 +1,7 @@
 fastapi
 Flask[async]
 Python-DotEnv
-smskillsdk
+#smskillsdk
 uvicorn
 vertexai
 google-cloud-aiplatform>=1.38

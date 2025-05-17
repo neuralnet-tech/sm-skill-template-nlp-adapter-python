@@ -3,7 +3,7 @@ These functions use Promises and setTimeouts to mock HTTP requests to a third pa
 and should be replaced with the actual HTTP calls when implementing.
 """
 from typing import List
-from smskillsdk.models.common import Memory, MemoryScope, Intent
+from app.smskillsdk.models.common import Memory, MemoryScope, Intent
 from google import genai
 from google.genai.chats import Chat
 from google.genai import types
