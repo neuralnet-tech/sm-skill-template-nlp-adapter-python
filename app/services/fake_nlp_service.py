@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 #from ..mocks.mock_request import mock_get_response, mock_init_resources, mock_init_actions
 #from ..mocks.gemini_agent import get_response, init_resources, init_actions, get_welcome_response, get_goodbye_response, get_idle_response, get_hello_response
-from ..mocks.gemini_agent_2_mediaNight import get_response, init_resources, init_actions, get_welcome_response, get_goodbye_response, get_idle_response, get_hello_response
+from ..mocks.gemini_agent_2_mediaNight import get_response, init_resources, init_actions, get_welcome_response, get_goodbye_response, get_idle_response, get_hello_response, get_button_response
 from app.smskillsdk.models.common import MemoryScope, Intent
 
 
@@ -87,6 +87,10 @@ class FakeNLPService:
         elif user_input == "Byebye1234":
             self.set_fake_nlp_state("idle")
             return get_goodbye_response(beQuiet=True)
+        elif "Button1234" in user_input:
+            # user_input will be like "Button1234/key", strip the key part
+            key = user_input.split("/")[1] if "/" in user_input else "button10"
+            return get_button_response(key)
         else:
             #manage state here
             if self.get_fake_nlp_state() == "idle":
