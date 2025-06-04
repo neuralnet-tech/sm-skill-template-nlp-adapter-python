@@ -1,5 +1,5 @@
 #for pydantic > 2
-
+"""
 import sys
 import importlib.util
 import importlib.machinery
@@ -43,10 +43,10 @@ def patch_api_module():
     # Now inject our fixed class
     module.ConversationHistory = FixedConversationHistory
     
-    return module 
+    return module """
 
 # Patch the module before anyone else imports it
-patched_module = patch_api_module()
+#patched_module = patch_api_module()
 
 from fastapi import FastAPI
 from .views import skill

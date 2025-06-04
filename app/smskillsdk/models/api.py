@@ -22,7 +22,7 @@ from enum import Enum
 from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel, Extra, Field
-
+from pydantic import RootModel # pydantic v2
 from . import common
 
 
@@ -105,8 +105,11 @@ class HistoryItem(BaseModel):
     output: Optional[HistoryOutput] = None
 
 
-class ConversationHistory(BaseModel):
-    __root__: List[HistoryItem]
+#class ConversationHistory(BaseModel):
+#    __root__: List[HistoryItem]
+
+class ConversationHistory(RootModel):
+    root: List  # Will be properly typed later
 
 
 class InitRequest(BaseModel):

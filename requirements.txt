@@ -6,5 +6,5 @@ uvicorn
 vertexai
 google-cloud-aiplatform>=1.38
 google-genai
-pydantic
+pydantic>=2
 #pydantic<2 #smskillsdk needs 1.9, google-genai needs > 2
