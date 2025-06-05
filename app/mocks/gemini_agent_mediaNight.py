@@ -6,7 +6,7 @@ and should be replaced with the actual HTTP calls when implementing.
 #ref https://docs.soulmachines.com/skills-api/getting-started/nlp-adapter-skill#advanced-concepts
 
 from typing import List
-from app.smskillsdk.models.common import Memory, MemoryScope, Intent
+from smskillsdk.models.common import Memory, MemoryScope, Intent
 import vertexai
 from vertexai.preview import rag
 #from vertexai import rag

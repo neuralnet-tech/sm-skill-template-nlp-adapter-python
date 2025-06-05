@@ -15,7 +15,8 @@
 """Utility functions for working with memory arrays"""
 from typing import Any, Dict, List, Tuple, Union
 
-from app.smskillsdk.models.common import Memory, MemoryScope
+#from app.smskillsdk.models.common import Memory, MemoryScope
+from smskillsdk.models.common import Memory, MemoryScope
 
 
 def _has_valid_session_id_and_scope(
