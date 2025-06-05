@@ -42,7 +42,7 @@ generation_config = {
     "temperature": 0.3, #0.5,
     "top_p": 0.95, #0.5, #0.5 better than 0.95
     "top_k": 40,
-    "response_mime_type":"application/json"
+    #"response_mime_type":"application/json"
 }
 
 #MODEL_STR = "gemini-1.5-flash-002"
@@ -314,31 +314,6 @@ def get_response(user_input: str):
 
     print(f"generated resp: {reponse_dict}")
     cards, intent, annotations =  None, None, None
-    response = ""
-    try:
-        reponse_dict = json.loads(reponse_dict)
-        if reponse_dict['uer_wants_to_watch_video']:
-            #response = f"Please enjoy the video. 请欣赏视屏。 {video_url[reponse_dict['type_of_video']]}"
-            #test show video
-            response = vidoe_intro[reponse_dict['language']] + "@showcards(card)" #"Hello! @showcards(card) Here is a video."
-            
-            cards = {
-                'card': {
-                    "type": "video",
-                    "id": "youtubeVideo",
-                        "data": {
-                            "videoId": video_id[reponse_dict['type_of_video']],
-                            "autoplay":"true",
-                            "autoclose":"true"
-                    }
-                }
-            }
-        else:
-            response = reponse_dict['response_text'] #+ " https://www.youtube.com/watch?v=Bhkm6fZMJcI"
+    response = reponse_dict 
         
-
-    except Exception as e:
-        print("error in reponse error decoding:",e)
-        
-
     return response, cards, intent, annotations

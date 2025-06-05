@@ -4,8 +4,10 @@ Python-DotEnv
 uvicorn
 vertexai
 google-cloud-aiplatform>=1.38
-google-genai
 smskillsdk
 pydantic<2 #smskillsdk needs 1.9, google-genai needs > 2
+
+#if use gemini 2
+#google-genai
 #pydantic>=2
 #pydantic-settings
