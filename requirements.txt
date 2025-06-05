@@ -1,11 +1,11 @@
 fastapi
 Flask[async]
 Python-DotEnv
-#smskillsdk
 uvicorn
 vertexai
 google-cloud-aiplatform>=1.38
 google-genai
-pydantic>=2
-pydantic-settings
-#pydantic<2 #smskillsdk needs 1.9, google-genai needs > 2
+smskillsdk
+pydantic<2 #smskillsdk needs 1.9, google-genai needs > 2
+#pydantic>=2
+#pydantic-settings
