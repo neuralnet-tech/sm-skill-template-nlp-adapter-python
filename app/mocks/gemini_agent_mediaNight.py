@@ -95,16 +95,17 @@ system_instruction = """Your Chinese name is 小美, translated to English as 'X
                       """
 
 manual_responses = {
+"button0": "",    
 "button1": "大家好! 我是你们今天的AI司仪小美。My name is Xiaomei, AI emcee for today event. 今天是我首次亮相主持，如果有什么表现不好的地方，请大家多多包涵!",
 "button2": "好的，今晚参会的贵宾有：马来西亚中华总商会（中总）总会长拿督吴逸平、永久名誉会长丹斯里锺廷森、丹斯里卢成全上议员、各位名誉会长、中央理事，以及各位媒体人，谢谢大家的到来！",
 "button3": "马来西亚中华总商会，简称中总，成立于1921年7月2日，是是国内华裔商会的联合总机构。为了让大家更了解中总，可以观看以下宣传视频。",
 "button4": "是的，有什么可以帮到您吗？",
-"button5": "好的，启动推介仪式。请各位来宾，准备好把你们的手放在银幕前，然后我们一起倒数： 5、 4、3、 2 1！",
-"button6": "中总青商大会是中总的年度重点活动，从2012年起，至今已主办过13届青商大会。今年8月15日主办的第14届中总青商大会，还特别增设了颁发楷模奖，预计参会人数可达到1000人！。",
-"button7": " ASEAN AI Business Summit 将会在9月12日召开，是一场专注在提供AI 解决方案的大会，也将展示AI在商业上的应用。",
-"button8": "ASEAN AI Business Summit 已经开始接受报名，大家可以到大会网站 ai-acccim.com 索取更多资料。",
-"button9": "谢谢！今晚的媒体希望大家尽情享受吧！也希望我今天的表现令大家满意，我们下次见！Let’s Party now！",
-"button10": ""
+"button5": "好的，启动推介仪式。请各位来宾，准备好把你们的手放在银幕前，然后我们一起倒数！",
+"button6": "5...........4............3............2...........1！ ",
+"button7": "中总青商大会是中总的年度重点活动，从2012年起，至今已主办过13届青商大会。今年8月15日主办的第14届中总青商大会，还特别增设了颁发楷模奖，预计参会人数可达到1000人！。",
+"button8": "ASEAN AI Business Summit 将会在9月12日召开，是一场专注在提供AI 解决方案的大会，也将展示AI在商业上的应用。",
+"button9": "ASEAN AI Business Summit 已经开始接受报名，大家可以到大会网站 ai-acccim.com 索取更多资料。",
+"button10": "谢谢！今晚的媒体希望大家尽情享受吧！也希望我今天的表现令大家满意，我们下次见！Let’s Party now！",
 }
 
 # ONLY answer to queries that are related to N.S.C.C.C.I other matters related to Negeri Sembilan, such as investment opportunities in Negeri Sembilan focusing on a project called The Vision Valley, its economy, tourism, food and culture and etc.

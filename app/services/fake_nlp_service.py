@@ -91,7 +91,7 @@ class FakeNLPService:
             return get_goodbye_response(beQuiet=True)
         elif "Button1234" in user_input:
             # user_input will be like "Button1234/key", strip the key part
-            key = user_input.split("/")[1] if "/" in user_input else "button10"
+            key = user_input.split("/")[1] if "/" in user_input else "button0"
             return get_button_response(key)
         else:
             #manage state here
