@@ -106,6 +106,7 @@ manual_responses = {
 "button8": "ASEAN AI Business Summit 将会在9月12日召开，是一场专注在提供AI 解决方案的大会，也将展示AI在商业上的应用。",
 "button9": "ASEAN AI Business Summit 已经开始接受报名，大家可以到大会网站 ai-acccim.com 索取更多资料。",
 "button10": "谢谢！今晚的媒体希望大家尽情享受吧！也希望我今天的表现令大家满意，我们下次见！Let’s Party now！",
+"button11": "#HeartSign",
 }
 
 # ONLY answer to queries that are related to N.S.C.C.C.I other matters related to Negeri Sembilan, such as investment opportunities in Negeri Sembilan focusing on a project called The Vision Valley, its economy, tourism, food and culture and etc.
